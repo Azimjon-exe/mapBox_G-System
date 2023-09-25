@@ -176,7 +176,6 @@ function MapPage() {
       },
     });
   };
-
   return (
     <div className="App">
       <div className="sidebar">

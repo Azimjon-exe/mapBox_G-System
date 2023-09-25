@@ -9,6 +9,7 @@ import GayiXodimlari from "./pages/gayi-xodimlari";
 import Kameralar from "./pages/cameralar";
 import Dorixonalar from "./pages/dorixonalar";
 import Xonadonlar from "./pages/xonadonlar";
+import Unversitetlar from "./pages/unversitetlar";
 
 const routes = [
   {
@@ -30,6 +31,11 @@ const routes = [
     id: 4,
     path: "xonadonlar",
     element: <Xonadonlar />,
+  },
+  {
+    id: 5,
+    path: "uversitetlar",
+    element: <Unversitetlar />,
   },
 ];
 
