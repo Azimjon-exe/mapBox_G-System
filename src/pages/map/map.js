@@ -1,10 +1,9 @@
 import React, { useRef, useEffect, useState } from "react";
 import mapboxgl from "mapbox-gl";
-import MapboxDraw from "@mapbox/mapbox-gl-draw";
-import "@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
 import { GlobalMapInstans, OloudedMap } from "../../redux/actions";
 import { useSelector } from "react-redux";
-
+import MapboxDraw from "@mapbox/mapbox-gl-draw";
+import "@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
 mapboxgl.accessToken =
   "pk.eyJ1IjoiYXppbWpvbm4iLCJhIjoiY2xtdTd2cXNuMGR2bjJqcWprNHJwaDJ0ZSJ9.S1qMws3nGfG-4Efs6DF9RQ";
 function MapPage() {
@@ -23,6 +22,7 @@ function MapPage() {
       longitude: 69.279737,
       title: "Toshkent",
     },
+    // Add more markers as needed
   ]);
 
   useEffect(() => {
@@ -32,6 +32,8 @@ function MapPage() {
         style: "mapbox://styles/azimjonn/clmu7yk2602ks01r78ak2dnjb",
         center: [markers[0].longitude, markers[0].latitude],
         zoom: zoom,
+        projection: "globe",
+        pitch: 0,
         maxBounds: [
           [69.115538, 41.153268], // Southwest coordinates [longitude, latitude]
           [69.354187, 41.426656], // Northeast coordinates [longitude, latitude]
@@ -40,33 +42,26 @@ function MapPage() {
 
       mapContainer.current.addEventListener("contextmenu", handleContextMenu);
 
-      mapInstance.on("zoom", () => {
-        const newRadius = calculateRadius(mapInstance.getZoom());
+      map.on("zoom", () => {
+        const newRadius = calculateRadius(map.getZoom());
         setRadius(newRadius);
-        drawCircle(mapInstance, newRadius);
+        drawCircle(map, newRadius);
       });
 
-      mapInstance.on("move", () => {
-        setLng(mapInstance.getCenter().lng.toFixed(4));
-        setLat(mapInstance.getCenter().lat.toFixed(4));
-        setZoom(mapInstance.getZoom().toFixed(2));
+      map.on("move", () => {
+        setLng(map.getCenter().lng.toFixed(4));
+        setLat(map.getCenter().lat.toFixed(4));
+        setZoom(map.getZoom().toFixed(2));
       });
-      mapInstance.on("load", () => {
-        // Add a source and layer for markers
-        mapInstance.addSource("markers", {
-        zoom: 12,
-        projection: "globe",
-        pitch: 0,
-      });
-      
-      map.on("load", () => {  
-        OloudedMap(true)
+      map.on("load", () => {
+        OloudedMap(true);
         if (map) {
           const nav = new mapboxgl.NavigationControl({
             visualizePitch: true,
           });
           map.addControl(nav, "bottom-right");
         }
+        // Add a source and layer for markers
         map.addSource("markers", {
           type: "geojson",
           data: {
@@ -85,7 +80,7 @@ function MapPage() {
           },
         });
 
-        // mapInstance.addLayer({
+        // map.addLayer({
         //   id: "markers",
         //   type: "symbol",
         //   source: "markers",
@@ -95,7 +90,7 @@ function MapPage() {
         //   },
         // });
 
-        mapInstance.addLayer({
+        map.addLayer({
           id: "circle-layer",
           type: "circle",
           source: {
@@ -126,28 +121,28 @@ function MapPage() {
         },
       });
 
-      mapInstance.on("load", () => {
-        mapInstance.addControl(draw);
+      map.on("load", () => {
+        map.addControl(draw, "bottom-right");
 
-        mapInstance.on("draw.create", (e) => {
+        map.on("draw.create", (e) => {
           console.log("Shape created:", e.features);
         });
 
-        mapInstance.on("draw.update", (e) => {
+        map.on("draw.update", (e) => {
           console.log("Shape updated:", e.features);
         });
 
-        mapInstance.on("draw.delete", (e) => {
+        map.on("draw.delete", (e) => {
           console.log("Shape deleted:", e.features);
         });
       });
-      setMap(mapInstance);
-        
-      });
-
+      // setMap(map);
       GlobalMapInstans(map);
     };
 
+    // if (!map) {
+    //   initializeMap();
+    // }
     if (!globalMapInstans) {
       initializeMap();
     }
@@ -161,7 +156,7 @@ function MapPage() {
         handleContextMenu
       );
     }; // Clean up on component unmount
-  }, [map, markers]);
+  }, [globalMapInstans, markers]);
 
   const handleContextMenu = (event) => {
     event.preventDefault(); // Prevent the default context menu
@@ -195,13 +190,12 @@ function MapPage() {
   };
 
   return (
-    <>
+    <div className="App">
       <div className="sidebar">
-        Longitude: {markers[0].longitude} | Latitude: {markers[0].latitude} |
-        Zoom: {zoom}
+        Longitude: {lng} | Latitude: {lat} | Zoom: {zoom}
       </div>
       <div ref={mapContainer} className="map-container" />
-    </>
+    </div>
   );
 }
 
