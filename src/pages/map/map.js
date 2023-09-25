@@ -6,12 +6,11 @@ mapboxgl.accessToken =
   "pk.eyJ1IjoiYXppbWpvbm4iLCJhIjoiY2xtdTd2cXNuMGR2bjJqcWprNHJwaDJ0ZSJ9.S1qMws3nGfG-4Efs6DF9RQ";
 function MapPage() {
   const mapContainer = useRef(null);
-  const circle = useRef(null);
   // const map = useRef(null);
   const [map, setMap] = useState(null);
   const [lng, setLng] = useState(69.2893);
   const [lat, setLat] = useState(41.32003);
-  const [zoom, setZoom] = useState(11);
+  const [zoom, setZoom] = useState(13);
   const [radius, setRadius] = useState(100);
   const [markers, setMarkers] = useState([
     {
@@ -30,7 +29,13 @@ function MapPage() {
         style: "mapbox://styles/azimjonn/clmu7yk2602ks01r78ak2dnjb",
         center: [markers[0].longitude, markers[0].latitude],
         zoom: zoom,
+        maxBounds: [
+          [69.115538, 41.153268], // Southwest coordinates [longitude, latitude]
+          [69.354187, 41.426656], // Northeast coordinates [longitude, latitude]
+        ],
       });
+
+      mapContainer.current.addEventListener("contextmenu", handleContextMenu);
 
       mapInstance.on("zoom", () => {
         const newRadius = calculateRadius(mapInstance.getZoom());
@@ -38,6 +43,11 @@ function MapPage() {
         drawCircle(mapInstance, newRadius);
       });
 
+      mapInstance.on("move", () => {
+        setLng(mapInstance.getCenter().lng.toFixed(4));
+        setLat(mapInstance.getCenter().lat.toFixed(4));
+        setZoom(mapInstance.getZoom().toFixed(2));
+      });
       mapInstance.on("load", () => {
         // Add a source and layer for markers
         mapInstance.addSource("markers", {
@@ -125,8 +135,18 @@ function MapPage() {
       if (map) {
         map.remove();
       }
-    };
+      mapContainer.current.removeEventListener(
+        "contextmenu",
+        handleContextMenu
+      );
+    }; // Clean up on component unmount
   }, [map, markers]);
+
+  const handleContextMenu = (event) => {
+    event.preventDefault(); // Prevent the default context menu
+    // Add your custom logic for right-click here
+    console.log("Right mouse button clicked!");
+  };
 
   const calculateRadius = (zoom) => {
     // Adjust the formula based on your requirements to calculate the radius
