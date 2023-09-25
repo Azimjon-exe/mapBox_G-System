@@ -2,9 +2,13 @@ import React, { useRef, useEffect, useState } from "react";
 import mapboxgl from "mapbox-gl";
 import MapboxDraw from "@mapbox/mapbox-gl-draw";
 import "@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
+import { GlobalMapInstans, OloudedMap } from "../../redux/actions";
+import { useSelector } from "react-redux";
+
 mapboxgl.accessToken =
   "pk.eyJ1IjoiYXppbWpvbm4iLCJhIjoiY2xtdTd2cXNuMGR2bjJqcWprNHJwaDJ0ZSJ9.S1qMws3nGfG-4Efs6DF9RQ";
 function MapPage() {
+  const globalMapInstans = useSelector((state) => state.globalMapInstans);
   const mapContainer = useRef(null);
   // const map = useRef(null);
   const [map, setMap] = useState(null);
@@ -19,12 +23,11 @@ function MapPage() {
       longitude: 69.279737,
       title: "Toshkent",
     },
-    // Add more markers as needed
   ]);
 
   useEffect(() => {
     const initializeMap = () => {
-      const mapInstance = new mapboxgl.Map({
+      const map = new mapboxgl.Map({
         container: mapContainer.current,
         style: "mapbox://styles/azimjonn/clmu7yk2602ks01r78ak2dnjb",
         center: [markers[0].longitude, markers[0].latitude],
@@ -51,6 +54,20 @@ function MapPage() {
       mapInstance.on("load", () => {
         // Add a source and layer for markers
         mapInstance.addSource("markers", {
+        zoom: 12,
+        projection: "globe",
+        pitch: 0,
+      });
+      
+      map.on("load", () => {  
+        OloudedMap(true)
+        if (map) {
+          const nav = new mapboxgl.NavigationControl({
+            visualizePitch: true,
+          });
+          map.addControl(nav, "bottom-right");
+        }
+        map.addSource("markers", {
           type: "geojson",
           data: {
             type: "FeatureCollection",
@@ -125,15 +142,19 @@ function MapPage() {
         });
       });
       setMap(mapInstance);
+        
+      });
+
+      GlobalMapInstans(map);
     };
 
-    if (!map) {
+    if (!globalMapInstans) {
       initializeMap();
     }
 
     return () => {
-      if (map) {
-        map.remove();
+      if (globalMapInstans) {
+        globalMapInstans.remove();
       }
       mapContainer.current.removeEventListener(
         "contextmenu",
@@ -174,12 +195,13 @@ function MapPage() {
   };
 
   return (
-    <div className="App">
+    <>
       <div className="sidebar">
-        Longitude: {lng} | Latitude: {lat} | Zoom: {zoom}
+        Longitude: {markers[0].longitude} | Latitude: {markers[0].latitude} |
+        Zoom: {zoom}
       </div>
       <div ref={mapContainer} className="map-container" />
-    </div>
+    </>
   );
 }
 

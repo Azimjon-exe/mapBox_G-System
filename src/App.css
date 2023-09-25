@@ -1,9 +1,11 @@
 .map-container {
+  width: 100%;
   height: 100vh;
 }
 
 .sidebar {
-  background-color: rgba(35, 55, 75, 0.9);
+  background-color: transparent;
+  box-shadow: 0px 0px 20px 5px rgba(2, 71, 254, 0.5) inset;
   color: #fff;
   padding: 6px 12px;
   font-family: monospace;
@@ -13,4 +15,15 @@
   left: 0;
   margin: 12px;
   border-radius: 4px;
+}
+
+.mapboxgl-ctrl-bottom-left .mapboxgl-ctrl .mapboxgl-ctrl-logo{
+  display: none;
+}
+.mapboxgl-ctrl-bottom-right .mapboxgl-ctrl .mapboxgl-ctrl-attrib-inner{
+  display: none;
+}
+.toolbar{
+  clip-path: polygon(2% 0%, 98% 0%, 100% 50%, 98% 100%, 2% 100%, 0% 50%);
+  padding: 0px 50px 0px 50px !important;
 }
