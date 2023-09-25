@@ -40,6 +40,14 @@ function MapPage() {
         ],
       });
 
+      const draw = new MapboxDraw({
+        displayControlsDefault: false,
+        controls: {
+          polygon: true,
+          trash: true,
+        },
+      });
+
       mapContainer.current.addEventListener("contextmenu", handleContextMenu);
 
       map.on("zoom", () => {
@@ -80,16 +88,6 @@ function MapPage() {
           },
         });
 
-        // map.addLayer({
-        //   id: "markers",
-        //   type: "symbol",
-        //   source: "markers",
-        //   layout: {
-        //     "icon-image": "marker-15",
-        //     "icon-allow-overlap": true,
-        //   },
-        // });
-
         map.addLayer({
           id: "circle-layer",
           type: "circle",
@@ -111,17 +109,6 @@ function MapPage() {
             "circle-stroke-color": "#0056ff",
           },
         });
-      });
-
-      const draw = new MapboxDraw({
-        displayControlsDefault: false,
-        controls: {
-          polygon: true,
-          trash: true,
-        },
-      });
-
-      map.on("load", () => {
         map.addControl(draw, "bottom-right");
 
         map.on("draw.create", (e) => {
@@ -136,6 +123,7 @@ function MapPage() {
           console.log("Shape deleted:", e.features);
         });
       });
+
       // setMap(map);
       GlobalMapInstans(map);
     };
