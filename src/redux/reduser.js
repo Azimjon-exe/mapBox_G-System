@@ -1,4 +1,4 @@
-import { GLOBAL_MAP_INSTANS, ONLOUDED_MAP } from "./types";
+import { GLOBAL_MAP_INSTANS, ONLOUDED_MAP, ROUTE_ID } from "./types";
 
 const initialState = {
   globalMapInstans: null,
@@ -24,6 +24,11 @@ const initialState = {
       title: "Xonadonlar",
       to: "/xonadonlar",
     },
+    {
+      id: 5,
+      title: "Unversitetlar",
+      to: "/uversitetlar",
+    },
   ],
 };
 
@@ -33,7 +38,7 @@ const reducer = (state = initialState, action) => {
       return { ...state, globalMapInstans: action.payload };
     case ONLOUDED_MAP:
       return { ...state, onloudedMap: action.payload };
-
+    
     default:
       return state;
   }

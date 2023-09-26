@@ -45,22 +45,26 @@ const GayiXodimlari = () => {
     // for (const marker of markers) {
     //   marker.remove();
     // }
+    
+
     const sourceId = "clasterGayi";
     const layerId = 'clusters';
     const layerId1 = 'cluster_icon';
     const layerId2 = 'cluster_label';
     
-    if (
-      globalMapInstans &&
-      globalMapInstans.getLayer(layerId)&&
-      globalMapInstans.getLayer(layerId1)&&
-      globalMapInstans.getLayer(layerId2)
-    ) {
-      globalMapInstans.removeLayer(layerId);
-      globalMapInstans.removeLayer(layerId1);
-      globalMapInstans.removeLayer(layerId2);
-    }
-
+    const imageId = 'icon'
+      if (
+        globalMapInstans && onloudedMap &&
+        globalMapInstans.getLayer(layerId) &&
+        globalMapInstans.getLayer(layerId1) &&
+        globalMapInstans.getLayer(layerId2) &&
+        globalMapInstans.hasImage(imageId)
+      ) {
+        globalMapInstans.removeLayer(layerId);
+        globalMapInstans.removeLayer(layerId1);
+        globalMapInstans.removeLayer(layerId2);
+        globalMapInstans.removeImage(imageId)
+      }
     if (globalMapInstans && onloudedMap) {
         if (!globalMapInstans.getSource(sourceId)) {
             globalMapInstans.addSource(sourceId, {
@@ -70,6 +74,7 @@ const GayiXodimlari = () => {
             clusterMaxZoom: 14, 
             clusterRadius: 50 
             });
+            console.log(globalMapInstans.getSource(sourceId).id);
         } 
             globalMapInstans.addLayer({
             id: layerId,
@@ -112,10 +117,10 @@ const GayiXodimlari = () => {
              
             globalMapInstans.loadImage(
                 'https://cdn-icons-png.flaticon.com/128/5917/5917776.png',
-                function (error, image) {
+                (error, image) => {
                   if (error) throw error;
       
-              globalMapInstans.addImage('gayi-icon', image);
+              globalMapInstans.addImage(imageId, image);
               globalMapInstans.addLayer({
                 id: layerId1,
                 type: "symbol", 
@@ -125,8 +130,8 @@ const GayiXodimlari = () => {
                   "icon-color": "blue",
                 },
                 layout: {
-                  "icon-image": "gayi-icon",
-                  "icon-size": 0.4,
+                  "icon-image": imageId,
+                  "icon-size": 0.6,
                   "icon-allow-overlap": true,
                 },
               });

@@ -6,7 +6,6 @@ import MapboxDraw from "@mapbox/mapbox-gl-draw";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
 
-// import "@mapbox/mapbox-gl-draw-circle";
 mapboxgl.accessToken =
   "pk.eyJ1IjoiYXppbWpvbm4iLCJhIjoiY2xtdTd2cXNuMGR2bjJqcWprNHJwaDJ0ZSJ9.S1qMws3nGfG-4Efs6DF9RQ";
 function MapPage() {
@@ -43,7 +42,7 @@ function MapPage() {
           circle: true,
         },
       });
-      // draw.changeMode("draw_circle", { initialRadiusInKm: 0.5 });
+
       map.on("mousedown", (e) => {
         console.log(e.lngLat);
       });
@@ -58,6 +57,7 @@ function MapPage() {
         setLat(map.getCenter().lat.toFixed(4));
         setZoom(map.getZoom().toFixed(2));
       });
+
       map.on("load", () => {
         OloudedMap(true);
         if (map) {
@@ -102,13 +102,9 @@ function MapPage() {
         });
       });
 
-      // setMap(map);
       GlobalMapInstans(map);
     };
 
-    // if (!map) {
-    //   initializeMap();
-    // }
     if (!globalMapInstans) {
       initializeMap();
     }

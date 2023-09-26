@@ -45,21 +45,26 @@ const Dorixonalar = () => {
     // for (const marker of markers) {
     //   marker.remove();
     // }
+    
+
     const sourceId = "clasterDorixona";
     const layerId = 'clusters';
     const layerId1 = 'cluster_icon';
     const layerId2 = 'cluster_label';
     
-    if (
-      globalMapInstans &&
-      globalMapInstans.getLayer(layerId)&&
-      globalMapInstans.getLayer(layerId1)&&
-      globalMapInstans.getLayer(layerId2)
-    ) {
-      globalMapInstans.removeLayer(layerId);
-      globalMapInstans.removeLayer(layerId1);
-      globalMapInstans.removeLayer(layerId2);
-    }
+    const imageId = 'icon'
+      if (
+        globalMapInstans && onloudedMap &&
+        globalMapInstans.getLayer(layerId) &&
+        globalMapInstans.getLayer(layerId1) &&
+        globalMapInstans.getLayer(layerId2) &&
+        globalMapInstans.hasImage(imageId)
+      ) {
+        globalMapInstans.removeLayer(layerId);
+        globalMapInstans.removeLayer(layerId1);
+        globalMapInstans.removeLayer(layerId2);
+        globalMapInstans.removeImage(imageId)
+      }
 
     if (globalMapInstans && onloudedMap) {
         if (!globalMapInstans.getSource(sourceId)) {
@@ -70,6 +75,7 @@ const Dorixonalar = () => {
             clusterMaxZoom: 14, 
             clusterRadius: 50 
             });
+            console.log(globalMapInstans.getSource(sourceId).id);
         } 
             globalMapInstans.addLayer({
             id: layerId,
@@ -112,10 +118,10 @@ const Dorixonalar = () => {
              
             globalMapInstans.loadImage(
                 'https://cdn-icons-png.flaticon.com/128/3497/3497123.png',
-                function (error, image) {
+                (error, image) => {
                   if (error) throw error;
       
-              globalMapInstans.addImage('dorixona-icon', image);
+              globalMapInstans.addImage(imageId, image);
               globalMapInstans.addLayer({
                 id: layerId1,
                 type: "symbol", 
@@ -125,7 +131,7 @@ const Dorixonalar = () => {
                   "icon-color": "blue",
                 },
                 layout: {
-                  "icon-image": "dorixona-icon",
+                  "icon-image": imageId,
                   "icon-size": 0.25,
                   "icon-allow-overlap": true,
                 },

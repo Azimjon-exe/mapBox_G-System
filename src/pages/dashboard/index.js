@@ -1,5 +1,4 @@
 import * as React from "react";
-import PropTypes from "prop-types";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
@@ -10,23 +9,28 @@ import MapPage from "../map/map";
 import { Outlet, useNavigate } from "react-router-dom";
 
 function DrawerAppBar() {
-    const globalMapInstans = useSelector((state) => state.globalMapInstans)
+  const globalMapInstans = useSelector((state) => state.globalMapInstans);
+  const onloudedMap = useSelector((state) => state.onloudedMap);
   const navItems = useSelector((state) => state.navItems);
   let navigate = useNavigate();
-  const layerId = 'clusters';
-    const layerId1 = 'cluster_icon';
-    const layerId2 = 'cluster_label';
-    
-    if (
-      globalMapInstans &&
-      globalMapInstans.getLayer(layerId)&&
-      globalMapInstans.getLayer(layerId1)&&
-      globalMapInstans.getLayer(layerId2)
-    ) {
-      globalMapInstans.removeLayer(layerId);
-      globalMapInstans.removeLayer(layerId1);
-      globalMapInstans.removeLayer(layerId2);
-    }
+  const layerId = "clusters";
+  const layerId1 = "cluster_icon";
+  const layerId2 = "cluster_label";
+  const imageId = "icon";
+  if (
+    globalMapInstans &&
+    onloudedMap &&
+    globalMapInstans.getLayer(layerId) &&
+    globalMapInstans.getLayer(layerId1) &&
+    globalMapInstans.getLayer(layerId2) &&
+    globalMapInstans.hasImage(imageId)
+  ) {
+    globalMapInstans.removeLayer(layerId);
+    globalMapInstans.removeLayer(layerId1);
+    globalMapInstans.removeLayer(layerId2);
+    globalMapInstans.removeImage(imageId);
+  }
+
   return (
     <Box sx={{ display: "flex" }}>
       <AppBar

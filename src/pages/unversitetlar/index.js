@@ -3,15 +3,14 @@ import ReactDOMServer from "react-dom/server";
 import PopupComp from "../../components/popup/popup1/popup-comp";
 import { useSelector } from "react-redux";
 import mapboxgl from "mapbox-gl";
+import Supercluster from "supercluster";
 
-const html = ReactDOMServer.renderToString(
-  (<PopupComp />)
-);
+const html = ReactDOMServer.renderToString(<PopupComp />);
 
-const Xonadonlar = () => {
+const Unversitetlar = () => {
   const globalMapInstans = useSelector((state) => state.globalMapInstans);
   const onloudedMap = useSelector((state) => state.onloudedMap);
-  const markerXonadonlar = {
+  const markerUnversitetlar = {
     type: "FeatureCollection",
     features: [],
   };
@@ -39,13 +38,10 @@ const Xonadonlar = () => {
       },
     };
 
-    markerXonadonlar.features.push(obj);
+    markerUnversitetlar.features.push(obj);
   }
   React.useEffect(() => {
-    // for (const marker of markers) {
-    //   marker.remove();
-    // }
-    const sourceId = "clasterXonadon";
+    const sourceId = "clasterUnversitet";
     const layerId = 'clusters';
     const layerId1 = 'cluster_icon';
     const layerId2 = 'cluster_label';
@@ -67,7 +63,7 @@ const Xonadonlar = () => {
         if (!globalMapInstans.getSource(sourceId)) {
             globalMapInstans.addSource(sourceId, {
             type: 'geojson',
-            data: markerXonadonlar,
+            data: markerUnversitetlar,
             cluster: true,
             clusterMaxZoom: 14, 
             clusterRadius: 50 
@@ -114,7 +110,7 @@ const Xonadonlar = () => {
             });
              
             globalMapInstans.loadImage(
-                'https://cdn-icons-png.flaticon.com/128/609/609803.png',
+                'https://img.icons8.com/?size=80&id=mDrxZDYOqAEP&format=png',
                 (error, image) => {
                   if (error) throw error;
       
@@ -129,7 +125,7 @@ const Xonadonlar = () => {
                 },
                 layout: {
                   "icon-image": imageId,
-                  "icon-size": 0.3,
+                  "icon-size": 0.5,
                   "icon-allow-overlap": true,
                 },
               });
@@ -177,7 +173,7 @@ const Xonadonlar = () => {
             globalMapInstans.getCanvas().style.cursor = '';
             });
       }
-    
+
   }, [globalMapInstans]);
   return (
     <div
@@ -189,4 +185,4 @@ const Xonadonlar = () => {
   );
 };
 
-export default Xonadonlar;
+export default Unversitetlar;
