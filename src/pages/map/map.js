@@ -3,34 +3,28 @@ import mapboxgl from "mapbox-gl";
 import { GlobalMapInstans, OloudedMap } from "../../redux/actions";
 import { useSelector } from "react-redux";
 import MapboxDraw from "@mapbox/mapbox-gl-draw";
+import "mapbox-gl/dist/mapbox-gl.css";
 import "@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
+
+// import "@mapbox/mapbox-gl-draw-circle";
 mapboxgl.accessToken =
   "pk.eyJ1IjoiYXppbWpvbm4iLCJhIjoiY2xtdTd2cXNuMGR2bjJqcWprNHJwaDJ0ZSJ9.S1qMws3nGfG-4Efs6DF9RQ";
 function MapPage() {
   const globalMapInstans = useSelector((state) => state.globalMapInstans);
   const mapContainer = useRef(null);
-  // const map = useRef(null);
-  const [map, setMap] = useState(null);
+  const mapRef = useRef(null);
+  const drawRef = useRef(null);
   const [lng, setLng] = useState(69.2893);
   const [lat, setLat] = useState(41.32003);
   const [zoom, setZoom] = useState(13);
   const [radius, setRadius] = useState(100);
-  const [markers, setMarkers] = useState([
-    {
-      id: 1,
-      latitude: 41.311158,
-      longitude: 69.279737,
-      title: "Toshkent",
-    },
-    // Add more markers as needed
-  ]);
 
   useEffect(() => {
     const initializeMap = () => {
       const map = new mapboxgl.Map({
         container: mapContainer.current,
         style: "mapbox://styles/azimjonn/clmu7yk2602ks01r78ak2dnjb",
-        center: [markers[0].longitude, markers[0].latitude],
+        center: [69.279737, 41.311158],
         zoom: zoom,
         projection: "globe",
         pitch: 0,
@@ -39,22 +33,25 @@ function MapPage() {
           [69.354187, 41.426656], // Northeast coordinates [longitude, latitude]
         ],
       });
+      mapRef.current = map;
 
       const draw = new MapboxDraw({
         displayControlsDefault: false,
         controls: {
           polygon: true,
           trash: true,
+          circle: true,
         },
       });
+      // draw.changeMode("draw_circle", { initialRadiusInKm: 0.5 });
+      map.on("mousedown", (e) => {
+        console.log(e.lngLat);
+      });
+      map.addControl(draw, "bottom-right");
+
+      drawRef.current = draw;
 
       mapContainer.current.addEventListener("contextmenu", handleContextMenu);
-
-      map.on("zoom", () => {
-        const newRadius = calculateRadius(map.getZoom());
-        setRadius(newRadius);
-        drawCircle(map, newRadius);
-      });
 
       map.on("move", () => {
         setLng(map.getCenter().lng.toFixed(4));
@@ -69,24 +66,6 @@ function MapPage() {
           });
           map.addControl(nav, "bottom-right");
         }
-        // Add a source and layer for markers
-        map.addSource("markers", {
-          type: "geojson",
-          data: {
-            type: "FeatureCollection",
-            features: markers.map((marker) => ({
-              type: "Feature",
-              geometry: {
-                type: "Point",
-                coordinates: [marker.longitude, marker.latitude],
-              },
-              properties: {
-                title: marker.title,
-                id: marker.id,
-              },
-            })),
-          },
-        });
 
         map.addLayer({
           id: "circle-layer",
@@ -98,7 +77,7 @@ function MapPage() {
               properties: {},
               geometry: {
                 type: "Point",
-                coordinates: [69.279737, 41.311158], // [longitude, latitude]
+                coordinates: [69.279737, 0.311158], // [longitude, latitude]
               },
             },
           },
@@ -109,7 +88,6 @@ function MapPage() {
             "circle-stroke-color": "#0056ff",
           },
         });
-        map.addControl(draw, "bottom-right");
 
         map.on("draw.create", (e) => {
           console.log("Shape created:", e.features);
@@ -144,37 +122,12 @@ function MapPage() {
         handleContextMenu
       );
     }; // Clean up on component unmount
-  }, [globalMapInstans, markers]);
+  }, [globalMapInstans]);
 
   const handleContextMenu = (event) => {
     event.preventDefault(); // Prevent the default context menu
     // Add your custom logic for right-click here
     console.log("Right mouse button clicked!");
-  };
-
-  const calculateRadius = (zoom) => {
-    // Adjust the formula based on your requirements to calculate the radius
-    return 1000 / Math.pow(2, zoom - 9);
-  };
-
-  const drawCircle = (map, circleRadius) => {
-    const sourceId = "circle-source";
-
-    if (map.getSource(sourceId)) {
-      map.removeSource(sourceId);
-    }
-
-    map.addSource(sourceId, {
-      type: "geojson",
-      data: {
-        type: "Feature",
-        properties: {},
-        geometry: {
-          type: "Point",
-          coordinates: [69.279737, 41.311158],
-        },
-      },
-    });
   };
 
   return (
