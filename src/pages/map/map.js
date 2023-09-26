@@ -4,13 +4,13 @@ import { GlobalMapInstans, OloudedMap } from "../../redux/actions";
 import { useSelector } from "react-redux";
 import MapboxDraw from "@mapbox/mapbox-gl-draw";
 import "@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
+const { turf } = require("@turf/turf");
+
 mapboxgl.accessToken =
   "pk.eyJ1IjoiYXppbWpvbm4iLCJhIjoiY2xtdTd2cXNuMGR2bjJqcWprNHJwaDJ0ZSJ9.S1qMws3nGfG-4Efs6DF9RQ";
 function MapPage() {
   const globalMapInstans = useSelector((state) => state.globalMapInstans);
   const mapContainer = useRef(null);
-  // const map = useRef(null);
-  const [map, setMap] = useState(null);
   const [lng, setLng] = useState(69.2893);
   const [lat, setLat] = useState(41.32003);
   const [zoom, setZoom] = useState(13);
@@ -61,6 +61,19 @@ function MapPage() {
         setLat(map.getCenter().lat.toFixed(4));
         setZoom(map.getZoom().toFixed(2));
       });
+
+      // const distanceContainer = document.getElementById("distance");
+      // const geojson = {
+      //   type: "FeatureCollection",
+      //   features: [],
+      // };
+      // const linestring = {
+      //   type: "Feature",
+      //   geometry: {
+      //     type: "LineString",
+      //     coordinates: [],
+      //   },
+      // };
       map.on("load", () => {
         OloudedMap(true);
         if (map) {
@@ -122,15 +135,109 @@ function MapPage() {
         map.on("draw.delete", (e) => {
           console.log("Shape deleted:", e.features);
         });
-      });
 
-      // setMap(map);
+
+
+        // map.addSource("geojson", {
+        //   type: "geojson",
+        //   data: geojson,
+        // });
+
+        // // Add styles to the map
+        // map.addLayer({
+        //   id: "measure-points",
+        //   type: "circle",
+        //   source: "geojson",
+        //   paint: {
+        //     "circle-radius": 5,
+        //     "circle-color": "#000",
+        //   },
+        //   filter: ["in", "$type", "Point"],
+        // });
+        // map.addLayer({
+        //   id: "measure-lines",
+        //   type: "line",
+        //   source: "geojson",
+        //   layout: {
+        //     "line-cap": "round",
+        //     "line-join": "round",
+        //   },
+        //   paint: {
+        //     "line-color": "#000",
+        //     "line-width": 2.5,
+        //   },
+        //   filter: ["in", "$type", "LineString"],
+        // });
+
+        // map.on("click", (e) => {
+        //   const features = map.queryRenderedFeatures(e.point, {
+        //     layers: ["measure-points"],
+        //   });
+
+        //   // Remove the linestring from the group
+        //   // so we can redraw it based on the points collection.
+        //   if (geojson.features.length > 1) geojson.features.pop();
+
+        //   // Clear the distance container to populate it with a new value.
+        //   if(distanceContainer){
+        //     distanceContainer.innerHTML = "";
+        //   }
+
+        //   // If a feature was clicked, remove it from the map.
+        //   if (features.length) {
+        //     const id = features[0].properties.id;
+        //     geojson.features = geojson.features.filter(
+        //       (point) => point.properties.id !== id
+        //     );
+        //   } else {
+        //     const point = {
+        //       type: "Feature",
+        //       geometry: {
+        //         type: "Point",
+        //         coordinates: [e.lngLat.lng, e.lngLat.lat],
+        //       },
+        //       properties: {
+        //         id: String(new Date().getTime()),
+        //       },
+        //     };
+
+        //     geojson.features.push(point);
+        //   }
+
+        //   if (geojson.features.length > 1) {
+        //     linestring.geometry.coordinates = geojson.features.map(
+        //       (point) => point.geometry.coordinates
+        //     );
+
+        //     geojson.features.push(linestring);
+
+        //     // Populate the distanceContainer with total distance
+        //     const value = document.createElement("pre");
+        //     const distance = turf.length(linestring);
+        //     value.textContent = `Total distance: ${distance.toLocaleString()}km`;
+        //     distanceContainer.appendChild(value);
+        //   }
+
+        //   map.getSource("geojson").setData(geojson);
+        // });
+        
+      });
+      
+      // map.on("mousemove", (e) => {
+      //   const features = map.queryRenderedFeatures(e.point, {
+      //     layers: ["measure-points"],
+      //   });
+      //   // Change the cursor to a pointer when hovering over a point on the map.
+      //   // Otherwise cursor is a crosshair.
+      //   map.getCanvas().style.cursor = features.length
+      //     ? "pointer"
+      //     : "crosshair";
+      // });
+
       GlobalMapInstans(map);
     };
 
-    // if (!map) {
-    //   initializeMap();
-    // }
+   
     if (!globalMapInstans) {
       initializeMap();
     }
