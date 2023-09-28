@@ -32,6 +32,7 @@ function MapPage() {
           [69.354187, 41.426656], // Northeast coordinates [longitude, latitude]
         ],
       });
+
       mapRef.current = map;
 
       const draw = new MapboxDraw({
@@ -60,6 +61,7 @@ function MapPage() {
 
       map.on("load", () => {
         OloudedMap(true);
+
         if (map) {
           const nav = new mapboxgl.NavigationControl({
             visualizePitch: true,
@@ -108,7 +110,6 @@ function MapPage() {
     if (!globalMapInstans) {
       initializeMap();
     }
-
     return () => {
       if (globalMapInstans) {
         globalMapInstans.remove();
