@@ -1,8 +1,16 @@
-import { GLOBAL_MAP_INSTANS, ONLOUDED_MAP, ROUTE_ID } from "./types";
+import {
+  GLOBAL_MAP_INSTANS,
+  ONLOUDED_MAP,
+  ON_LOUDED_MAP,
+  ROUTE_BOOL,
+  ROUTE_ID,
+  ROUTE_STR,
+} from "./types";
 
 const initialState = {
   globalMapInstans: null,
   onloudedMap: false,
+  loadedMap: () => {},
   navItems: [
     {
       id: 1,
@@ -38,7 +46,8 @@ const reducer = (state = initialState, action) => {
       return { ...state, globalMapInstans: action.payload };
     case ONLOUDED_MAP:
       return { ...state, onloudedMap: action.payload };
-    
+    case ON_LOUDED_MAP:
+      return { ...state, loadedMap: action.payload };
     default:
       return state;
   }

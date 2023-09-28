@@ -7,29 +7,33 @@ import { useSelector } from "react-redux";
 import { Box } from "@mui/material";
 import MapPage from "../map/map";
 import { Outlet, useNavigate } from "react-router-dom";
+import { RouteBool, RouteStr } from "../../redux/actions";
+import { ROUTE_STR } from "../../redux/types";
 
 function DrawerAppBar() {
   const globalMapInstans = useSelector((state) => state.globalMapInstans);
   const onloudedMap = useSelector((state) => state.onloudedMap);
   const navItems = useSelector((state) => state.navItems);
+
   let navigate = useNavigate();
-  const layerId = "clusters";
-  const layerId1 = "cluster_icon";
-  const layerId2 = "cluster_label";
-  const imageId = "icon";
-  if (
-    globalMapInstans &&
-    onloudedMap &&
-    globalMapInstans.getLayer(layerId) &&
-    globalMapInstans.getLayer(layerId1) &&
-    globalMapInstans.getLayer(layerId2) &&
-    globalMapInstans.hasImage(imageId)
-  ) {
-    globalMapInstans.removeLayer(layerId);
-    globalMapInstans.removeLayer(layerId1);
-    globalMapInstans.removeLayer(layerId2);
-    globalMapInstans.removeImage(imageId);
-  }
+
+  const propRemove = () => {
+    const sourceId = "earthquakes";
+    const layerId = "clusters";
+    const layerId1 = "unclustered-point";
+    const layerId2 = "cluster-count";
+    const imageId = "icon";
+    if (globalMapInstans.getSource(sourceId))
+      globalMapInstans.removeSource(sourceId);
+    if (globalMapInstans.getLayer(layerId))
+      globalMapInstans.removeLayer(layerId);
+    if (globalMapInstans.getLayer(layerId1))
+      globalMapInstans.removeLayer(layerId1);
+    if (globalMapInstans.getLayer(layerId2))
+      globalMapInstans.removeLayer(layerId2);
+    if (globalMapInstans.hasImage(imageId))
+      globalMapInstans.removeImage(imageId);
+  };
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -51,21 +55,27 @@ function DrawerAppBar() {
             width: "90%",
             boxShadow: 5,
             boxShadow: "0px 0px 20px 8px rgba(2, 71, 254, 0.5) inset",
+            backdropFilter: "blur(5px)",
           }}
         >
-          <Typography
-            onClick={() => navigate("/")}
-            variant="h6"
+          <Box
             component="div"
             sx={{ flexGrow: 1, cursor: "pointer" }}
           >
-            Qalqon 3D MAP
-          </Typography>
+            <Typography variant="h6" component={'span'} 
+            onClick={() => {
+              navigate("/");
+              propRemove();
+            }}>Qalqon 3D MAP</Typography>
+          </Box>
           <Box>
             {navItems.map((item, index) => (
               <Button
                 key={item.id}
-                onClick={() => navigate(item.to)}
+                onClick={() => {
+                  navigate(item.to);
+                  // propRemove()
+                }}
                 sx={{
                   color: "#fff",
                   textTransform: "none",
