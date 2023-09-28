@@ -1,10 +1,20 @@
 import React, { useRef, useEffect, useState } from "react";
 import mapboxgl from "mapbox-gl";
+import { BsCircle, BsFillTrashFill } from "react-icons/bs";
+import { BiPlusCircle } from "react-icons/bi";
+import { TbPolygon } from "react-icons/tb";
+import { AiOutlineLine } from "react-icons/ai";
 import { GlobalMapInstans, OloudedMap } from "../../redux/actions";
 import { useSelector } from "react-redux";
 import MapboxDraw from "@mapbox/mapbox-gl-draw";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
+import {
+  CircleMode,
+  DragCircleMode,
+  DirectMode,
+  SimpleSelectMode,
+} from "mapbox-gl-draw-circle";
 
 mapboxgl.accessToken =
   "pk.eyJ1IjoiYXppbWpvbm4iLCJhIjoiY2xtdTd2cXNuMGR2bjJqcWprNHJwaDJ0ZSJ9.S1qMws3nGfG-4Efs6DF9RQ";
@@ -12,11 +22,36 @@ function MapPage() {
   const globalMapInstans = useSelector((state) => state.globalMapInstans);
   const mapContainer = useRef(null);
   const mapRef = useRef(null);
-  const drawRef = useRef(null);
   const [lng, setLng] = useState(69.2893);
   const [lat, setLat] = useState(41.32003);
   const [zoom, setZoom] = useState(13);
-  const [radius, setRadius] = useState(100);
+  const [drawType, setDrawType] = useState();
+  const [drawState, set_drawState] = useState();
+
+  const shapes = [
+    // { key: 1, icon: <BsCircle color="white" size={20} />, mode: "draw_circle" },
+    {
+      key: 2,
+      icon: <BiPlusCircle color="white" size={22} />,
+      mode: "drag_circle",
+    },
+    {
+      key: 3,
+      icon: <TbPolygon color="white" size={22} />,
+      mode: "draw_polygon",
+    },
+    {
+      key: 4,
+      icon: <AiOutlineLine color="white" size={22} />,
+      mode: "draw_line_string",
+    },
+  ];
+  let feature = {
+    id: "234nwkej2j3h4",
+    type: "Feature",
+    properties: {},
+    geometry: { type: "Point", coordinates: [0, 0] },
+  };
 
   useEffect(() => {
     const initializeMap = () => {
@@ -34,24 +69,6 @@ function MapPage() {
       });
       mapRef.current = map;
 
-      const draw = new MapboxDraw({
-        displayControlsDefault: false,
-        controls: {
-          polygon: true,
-          trash: true,
-          circle: true,
-        },
-      });
-
-      map.on("mousedown", (e) => {
-        console.log(e.lngLat);
-      });
-      map.addControl(draw, "bottom-right");
-
-      drawRef.current = draw;
-
-      mapContainer.current.addEventListener("contextmenu", handleContextMenu);
-
       map.on("move", () => {
         setLng(map.getCenter().lng.toFixed(4));
         setLat(map.getCenter().lat.toFixed(4));
@@ -67,28 +84,6 @@ function MapPage() {
           map.addControl(nav, "bottom-right");
         }
 
-        map.addLayer({
-          id: "circle-layer",
-          type: "circle",
-          source: {
-            type: "geojson",
-            data: {
-              type: "Feature",
-              properties: {},
-              geometry: {
-                type: "Point",
-                coordinates: [69.279737, 0.311158], // [longitude, latitude]
-              },
-            },
-          },
-          paint: {
-            "circle-radius": radius, // Adjust the radius of the circle in meters
-            "circle-color": " rgba(0,0,255,0.3533788515406162)",
-            "circle-stroke-width": 2, // Adjust the border width
-            "circle-stroke-color": "#0056ff",
-          },
-        });
-
         map.on("draw.create", (e) => {
           console.log("Shape created:", e.features);
         });
@@ -100,6 +95,9 @@ function MapPage() {
         map.on("draw.delete", (e) => {
           console.log("Shape deleted:", e.features);
         });
+      });
+      map.on("mousedown", (e) => {
+        console.log("click center cordinate", e.lngLat);
       });
 
       GlobalMapInstans(map);
@@ -113,25 +111,66 @@ function MapPage() {
       if (globalMapInstans) {
         globalMapInstans.remove();
       }
-      mapContainer.current.removeEventListener(
-        "contextmenu",
-        handleContextMenu
-      );
     }; // Clean up on component unmount
   }, [globalMapInstans]);
 
-  const handleContextMenu = (event) => {
-    event.preventDefault(); // Prevent the default context menu
-    // Add your custom logic for right-click here
-    console.log("Right mouse button clicked!");
-  };
+  useEffect(() => {
+    if (mapRef.current && drawType) {
+      let draw = new MapboxDraw({
+        defaultMode: drawType,
+        userProperties: true,
+        modes: {
+          ...MapboxDraw.modes,
+          draw_circle: CircleMode,
+          drag_circle: DragCircleMode,
+          direct_select: DirectMode,
+          simple_select: SimpleSelectMode,
+        },
+        displayControlsDefault: false,
+        // controls: {
+        //   polygon: true,
+        //   trash: true,
+        //   circle: true,
+        // },
+      });
+      set_drawState(draw);
+      mapRef.current.addControl(draw, "bottom-right");
+    }
+  }, [drawType]);
 
   return (
     <div className="App">
       <div className="sidebar">
         Longitude: {lng} | Latitude: {lat} | Zoom: {zoom}
       </div>
+
       <div ref={mapContainer} className="map-container" />
+      <div className="drawBox">
+        {shapes.map((shape) => (
+          <div
+            key={shape.key}
+            className={`shape ${shape.mode === drawType ? "active" : ""}`}
+            onClick={() => {
+              if (shape.mode !== drawType) {
+                setDrawType(shape.mode);
+                console.log(drawState);
+                if (drawType) mapRef.current.removeControl(drawState);
+              }
+            }}
+          >
+            {shape.icon}
+          </div>
+        ))}
+        <div
+          className="deleteShape"
+          onClick={() => {
+            setDrawType(null);
+            mapRef.current.removeControl(drawState);
+          }}
+        >
+          <BsFillTrashFill size={20} color="white" />
+        </div>
+      </div>
     </div>
   );
 }

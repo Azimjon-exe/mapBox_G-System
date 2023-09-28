@@ -16,14 +16,40 @@
   margin: 12px;
   border-radius: 4px;
 }
+.drawBox {
+  background-color: rgba(2, 71, 254, 0.5);
+  font-family: monospace;
+  z-index: 1;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 12px;
+  border-radius: 4px;
+  display: flex;
+  overflow: hidden;
+}
+.drawBox > .shape {
+  padding: 6px 10px;
+  cursor: pointer;
+  /* background-color: blue; */
+}
+.drawBox > .active {
+  background-color: blue;
+}
+.drawBox > .deleteShape {
+  padding: 6px 5px;
+  cursor: pointer;
+  background-color: rgb(253, 33, 17);
+}
 
-.mapboxgl-ctrl-bottom-left .mapboxgl-ctrl .mapboxgl-ctrl-logo{
+.mapboxgl-ctrl-bottom-left .mapboxgl-ctrl .mapboxgl-ctrl-logo {
   display: none;
 }
-.mapboxgl-ctrl-bottom-right .mapboxgl-ctrl .mapboxgl-ctrl-attrib-inner{
+.mapboxgl-ctrl-bottom-right .mapboxgl-ctrl .mapboxgl-ctrl-attrib-inner {
   display: none;
 }
-.toolbar{
+.toolbar {
   clip-path: polygon(2% 0%, 98% 0%, 100% 50%, 98% 100%, 2% 100%, 0% 50%);
   padding: 0px 50px 0px 50px !important;
 }
@@ -33,9 +59,9 @@
   top: 10px;
   left: 10px;
   z-index: 1;
-  }
-   
-  .distance-container > * {
+}
+
+.distance-container > * {
   background-color: rgba(0, 0, 0, 0.5);
   color: #fff;
   font-size: 11px;
@@ -44,4 +70,4 @@
   margin: 0;
   padding: 5px 10px;
   border-radius: 3px;
-  }
+}
