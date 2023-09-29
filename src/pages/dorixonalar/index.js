@@ -11,8 +11,8 @@ const Dorixonalar = () => {
   const onloudedMap = useSelector((state) => state.onloudedMap);
 
   const generateRandomCoordinates = () => {
-    var longitude = Math.random() * (69.294057 - 69.179273) + 69.179273;
-    var latitude = Math.random() * (41.306813 - 41.351043) + 41.351043;
+    let longitude = 69.2401 + (Math.random() - 0.5) * 0.2;
+    let latitude = 41.3111 + (Math.random() - 0.5) * 0.2;
     return [longitude, latitude];
   };
 
@@ -40,6 +40,14 @@ const Dorixonalar = () => {
         let coordinatesRan = generateRandomCoordinates();
         let obj = {
           type: "Feature",
+          properties: {
+            id: `ak1699452${i}`,
+            cluster_id: `claster${i}`,
+            mag: 2.3 + i,
+            time: 1507425650893 + i,
+            felt: null,
+            tsunami: 0,
+          },
           geometry: {
             type: "Point",
             coordinates: coordinatesRan,
@@ -53,11 +61,15 @@ const Dorixonalar = () => {
           type: "geojson",
           data: {
             type: "FeatureCollection",
+            crs: {
+              type: "name",
+              properties: { name: "urn:ogc:def:crs:OGC:1.3:CRS84" },
+            },
             features: dorixonalar,
           },
           cluster: true,
-          clusterMaxZoom: 14,
-          clusterRadius: 50,
+          clusterMaxZoom: 16,
+          clusterRadius: 100,
         });
         // console.log(globalMapInstans.getSource(sourceId).id);
       }
@@ -79,11 +91,29 @@ const Dorixonalar = () => {
           "circle-radius": [
             "step",
             ["get", "point_count"],
-            20,
+            15,
             100,
-            30,
+            20,
             750,
-            40,
+            25,
+          ],
+          "circle-stroke-color": [
+            "step",
+            ["get", "point_count"],
+            "#0277FE",
+            100,
+            "#F08427",
+            750,
+            "#F55FA1",
+          ],
+          "circle-stroke-width": [
+            "step",
+            ["get", "point_count"],
+            2,
+            100,
+            2.5,
+            750,
+            3,
           ],
         },
       });
@@ -135,7 +165,7 @@ const Dorixonalar = () => {
 
             globalMapInstans.easeTo({
               center: features[0].geometry.coordinates,
-              zoom: zoom,
+              zoom: zoom+0.2,
             });
           });
       });
