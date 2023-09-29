@@ -86,12 +86,8 @@ function MapPage() {
           const navigationControlContainer = map
             .getContainer()
             .querySelector(".mapboxgl-ctrl-bottom-right");
-          const zoomInButton = navigationControlContainer.querySelector(
-            ".mapboxgl-ctrl-zoom-in"
-          );
-          const zoomOutButton = navigationControlContainer.querySelector(
-            ".mapboxgl-ctrl-zoom-out"
-          );
+          navigationControlContainer.querySelector(".mapboxgl-ctrl-zoom-in");
+          navigationControlContainer.querySelector(".mapboxgl-ctrl-zoom-out");
         }
 
         map.on("draw.create", (e) => {
@@ -105,7 +101,6 @@ function MapPage() {
         map.on("draw.delete", (e) => {
           console.log("Shape deleted:", e.features);
         });
-        
       });
       map.on("mousedown", (e) => {
         console.log("click center cordinate", e);
