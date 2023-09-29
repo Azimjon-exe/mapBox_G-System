@@ -16,7 +16,7 @@ const Xonadonlar = () => {
     return [longitude, latitude];
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     const sourceId = "earthquakesXonadon";
     const layerId = "clusters";
     const layerId1 = "unclustered-point";
@@ -165,7 +165,7 @@ const Xonadonlar = () => {
 
             globalMapInstans.easeTo({
               center: features[0].geometry.coordinates,
-              zoom: zoom+0.2,
+              zoom: zoom + 0.2,
             });
           });
       });

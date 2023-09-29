@@ -1,8 +1,4 @@
-import {
-  GLOBAL_MAP_INSTANS,
-  ONLOUDED_MAP,
-  ON_LOUDED_MAP,
-} from "./types";
+import { GLOBAL_MAP_INSTANS, ONLOUDED_MAP } from "./types";
 
 const initialState = {
   globalMapInstans: null,
@@ -42,7 +38,7 @@ const reducer = (state = initialState, action) => {
       return { ...state, globalMapInstans: action.payload };
     case ONLOUDED_MAP:
       return { ...state, onloudedMap: action.payload };
-    
+
     default:
       return state;
   }

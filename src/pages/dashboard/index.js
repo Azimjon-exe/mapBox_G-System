@@ -7,12 +7,12 @@ import { useSelector } from "react-redux";
 import { Box } from "@mui/material";
 import MapPage from "../map/map";
 import { Outlet, useNavigate } from "react-router-dom";
-import { RouteBool, RouteStr } from "../../redux/actions";
-import { ROUTE_STR } from "../../redux/types";
+// import { RouteBool, RouteStr } from "../../redux/actions";
+// import { ROUTE_STR } from "../../redux/types";
 
 function DrawerAppBar() {
   const globalMapInstans = useSelector((state) => state.globalMapInstans);
-  const onloudedMap = useSelector((state) => state.onloudedMap);
+  // const onloudedMap = useSelector((state) => state.onloudedMap);
   const navItems = useSelector((state) => state.navItems);
 
   let navigate = useNavigate();
@@ -53,20 +53,21 @@ function DrawerAppBar() {
             borderRadius: "20px",
             mt: 1,
             width: "90%",
-            boxShadow: 5,
             boxShadow: "0px 0px 20px 8px rgba(2, 71, 254, 0.5) inset",
             backdropFilter: "blur(5px)",
           }}
         >
-          <Box
-            component="div"
-            sx={{ flexGrow: 1, cursor: "pointer" }}
-          >
-            <Typography variant="h6" component={'span'} 
-            onClick={() => {
-              navigate("/");
-              propRemove();
-            }}>Qalqon 3D MAP</Typography>
+          <Box component="div" sx={{ flexGrow: 1, cursor: "pointer" }}>
+            <Typography
+              variant="h6"
+              component={"span"}
+              onClick={() => {
+                navigate("/");
+                propRemove();
+              }}
+            >
+              Qalqon 3D MAP
+            </Typography>
           </Box>
           <Box>
             {navItems.map((item, index) => (

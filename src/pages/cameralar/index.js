@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import ReactDOMServer from "react-dom/server";
 import PopupComp from "../../components/popup/popup1/popup-comp";
 import { useSelector } from "react-redux";
@@ -153,22 +153,21 @@ const Kameralar = () => {
           });
         }
       );
-      
 
       globalMapInstans.on("click", layerId, (e) => {
         const features = globalMapInstans.queryRenderedFeatures(e.point, {
           layers: [layerId],
         });
-          const clusterId = features[0].properties.cluster_id;
+        const clusterId = features[0].properties.cluster_id;
         globalMapInstans
           .getSource(sourceId)
           .getClusterExpansionZoom(clusterId, (err, zoom) => {
-            console.log(err  + " " + zoom);
+            console.log(err + " " + zoom);
             if (err) return;
 
             globalMapInstans.easeTo({
               center: features[0].geometry.coordinates,
-              zoom: zoom+0.2,
+              zoom: zoom + 0.2,
             });
             console.log(zoom);
           });

@@ -3,7 +3,7 @@ import ReactDOMServer from "react-dom/server";
 import PopupComp from "../../components/popup/popup1/popup-comp";
 import { useSelector } from "react-redux";
 import mapboxgl from "mapbox-gl";
-import { RouteStr } from "../../redux/actions";
+// import { RouteStr } from "../../redux/actions";
 
 const html = ReactDOMServer.renderToString(<PopupComp />);
 
@@ -166,15 +166,15 @@ const GayiXodimlari = () => {
 
             globalMapInstans.easeTo({
               center: features[0].geometry.coordinates,
-              zoom: zoom+0.2,
+              zoom: zoom + 0.2,
             });
           });
       });
 
       globalMapInstans.on("click", layerId1, (e) => {
         const coordinates = e.features[0].geometry.coordinates.slice();
-        const mag = e.features[0].properties.mag;
-        const tsunami = e.features[0].properties.tsunami === 1 ? "yes" : "no";
+        // const mag = e.features[0].properties.mag;
+        // const tsunami = e.features[0].properties.tsunami === 1 ? "yes" : "no";
 
         while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
           coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;

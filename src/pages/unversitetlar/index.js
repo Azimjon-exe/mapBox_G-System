@@ -166,15 +166,15 @@ const Unversitetlar = () => {
 
             globalMapInstans.easeTo({
               center: features[0].geometry.coordinates,
-              zoom: zoom+0.2,
+              zoom: zoom + 0.2,
             });
           });
       });
 
       globalMapInstans.on("click", layerId1, (e) => {
         const coordinates = e.features[0].geometry.coordinates.slice();
-        const mag = e.features[0].properties.mag;
-        const tsunami = e.features[0].properties.tsunami === 1 ? "yes" : "no";
+        // const mag = e.features[0].properties.mag;
+        // const tsunami = e.features[0].properties.tsunami === 1 ? "yes" : "no";
 
         while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
           coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;

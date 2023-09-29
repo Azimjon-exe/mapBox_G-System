@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from "react";
 import mapboxgl from "mapbox-gl";
-import { BsCircle, BsFillTrashFill } from "react-icons/bs";
+import { BsFillTrashFill } from "react-icons/bs";
 import { BiPlusCircle } from "react-icons/bi";
 import { TbPolygon } from "react-icons/tb";
 import { AiOutlineLine } from "react-icons/ai";
@@ -29,7 +29,6 @@ function MapPage() {
   const [drawState, set_drawState] = useState();
 
   const shapes = [
-    
     {
       key: 2,
       icon: <BiPlusCircle color="white" size={22} />,
@@ -46,12 +45,12 @@ function MapPage() {
       mode: "draw_line_string",
     },
   ];
-  let feature = {
-    id: "234nwkej2j3h4",
-    type: "Feature",
-    properties: {},
-    geometry: { type: "Point", coordinates: [0, 0] },
-  };
+  // let feature = {
+  //   id: "234nwkej2j3h4",
+  //   type: "Feature",
+  //   properties: {},
+  //   geometry: { type: "Point", coordinates: [0, 0] },
+  // };
 
   useEffect(() => {
     const initializeMap = () => {
@@ -113,6 +112,7 @@ function MapPage() {
         globalMapInstans.remove();
       }
     }; // Clean up on component unmount
+    // eslint-disable-next-line
   }, [globalMapInstans]);
 
   useEffect(() => {
