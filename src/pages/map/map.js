@@ -24,7 +24,7 @@ function MapPage() {
   const mapRef = useRef(null);
   const [lng, setLng] = useState(69.2893);
   const [lat, setLat] = useState(41.32003);
-  const [zoom, setZoom] = useState(12);
+  const [zoom, setZoom] = useState(11);
   const [drawType, setDrawType] = useState();
   const [drawState, set_drawState] = useState();
 
@@ -62,8 +62,8 @@ function MapPage() {
         projection: "globe",
         pitch: 0,
         maxBounds: [
-          [69.115538, 41.153268], // Southwest coordinates [longitude, latitude]
-          [69.354187, 41.426656], // Northeast coordinates [longitude, latitude]
+          [69.15538, 41.253268], // Southwest coordinates [longitude, latitude]
+          [69.454187, 41.526656], // Northeast coordinates [longitude, latitude]
         ],
       });
 
@@ -76,6 +76,113 @@ function MapPage() {
       });
 
       map.on("load", () => {
+        var layers = map.getStyle().layers;
+
+        var labelLayerId;
+        for (var i = 0; i < layers.length; i++) {
+          if (layers[i].type === "symbol" && layers[i].layout["text-field"]) {
+            labelLayerId = layers[i].id;
+            break;
+          }
+        }
+        map.addLayer(
+          {
+            id: "add-3d-buildings",
+            source: "composite",
+            "source-layer": "building",
+            // filter: ["==", "extrude", "true"],
+            type: "fill",
+            // type: "fill-extrusion",
+            minzoom: 15,
+            paint: {
+              "fill-color": "#3750AB",
+
+              // "fill-extrusion-color": "#3750AB",
+              // "fill-extrusion-opacity": 1, // Adjust opacity as needed
+
+              // "fill-extrusion-opacity-transition": {
+              //   duration: 500, // Adjust transition duration as needed
+              // },
+
+              // "fill-extrusion-height": [
+              //   "interpolate",
+              //   ["linear"],
+              //   ["zoom"],
+              //   15,
+              //   0,
+              //   15.05,
+              //   ["get", "height"],
+              // ],
+              // "fill-extrusion-base": [
+              //   "interpolate",
+              //   ["linear"],
+              //   ["zoom"],
+              //   15,
+              //   0,
+              //   15.05,
+              //   ["get", "min_height"],
+              // ],
+            },
+          },
+          labelLayerId
+        );
+
+        map.addSource("currentBuildings", {
+          type: "geojson",
+          data: {
+            type: "FeatureCollection",
+            features: [],
+          },
+        });
+        map.addLayer(
+          {
+            id: "currentBuildings_change",
+            source: "currentBuildings",
+            // filter: ["==", "extrude", "true"],
+            type: "fill",
+            // type: "fill-extrusion",
+            minzoom: 15,
+            paint: {
+              "fill-color": "#07257F",
+              // "fill-extrusion-color": "#07257F",
+
+              // "fill-extrusion-height": [
+              //   "interpolate",
+              //   ["linear"],
+              //   ["zoom"],
+              //   15,
+              //   0,
+              //   15.05,
+              //   ["get", "height"],
+              // ],
+              // "fill-extrusion-base": [
+              //   "interpolate",
+              //   ["linear"],
+              //   ["zoom"],
+              //   15,
+              //   0,
+              //   15.05,
+              //   ["get", "min_height"],
+              // ],
+              // "fill-extrusion-opacity": 1,
+            },
+          },
+          labelLayerId
+        );
+        map.on("mouseenter", "add-3d-buildings", function (e) {
+          map.getSource("currentBuildings").setData({
+            type: "FeatureCollection",
+            features: e.features,
+          });
+          map.repaint = true;
+        });
+        map.on("mouseleave", "add-3d-buildings", function (e) {
+          map.getSource("currentBuildings").setData({
+            type: "FeatureCollection",
+            features: [],
+          });
+        });
+
         OloudedMap(true);
 
         if (map) {
