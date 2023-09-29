@@ -28,6 +28,7 @@
   border-radius: 4px;
   display: flex;
   overflow: hidden;
+  backdrop-filter: blur(5px);
 }
 .drawBox > .shape {
   padding: 6px 10px;
@@ -47,6 +48,10 @@
   display: none;
 }
 .mapboxgl-ctrl-bottom-right .mapboxgl-ctrl .mapboxgl-ctrl-attrib-inner {
+  display: none;
+}
+.mapboxgl-ctrl .mapbox-gl-draw_polygon,
+.mapboxgl-ctrl .mapbox-gl-draw_trash {
   display: none;
 }
 .toolbar {

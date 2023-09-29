@@ -99,7 +99,7 @@ function MapPage() {
         });
       });
       map.on("mousedown", (e) => {
-        console.log("click center cordinate", e.lngLat);
+        console.log("click center cordinate", e);
       });
 
       GlobalMapInstans(map);
@@ -128,11 +128,11 @@ function MapPage() {
           simple_select: SimpleSelectMode,
         },
         displayControlsDefault: false,
-        // controls: {
-        //   polygon: true,
-        //   trash: true,
-        //   circle: true,
-        // },
+        controls: {
+          polygon: true,
+          trash: true,
+          circle: true,
+        },
       });
       set_drawState(draw);
       mapRef.current.addControl(draw, "bottom-right");
@@ -166,7 +166,7 @@ function MapPage() {
           className="deleteShape"
           onClick={() => {
             setDrawType(null);
-            mapRef.current.removeControl(drawState);
+            if (drawType) mapRef.current.removeControl(drawState);
           }}
         >
           <BsFillTrashFill size={20} color="white" />
