@@ -24,12 +24,12 @@ function MapPage() {
   const mapRef = useRef(null);
   const [lng, setLng] = useState(69.2893);
   const [lat, setLat] = useState(41.32003);
-  const [zoom, setZoom] = useState(13);
+  const [zoom, setZoom] = useState(11);
   const [drawType, setDrawType] = useState();
   const [drawState, set_drawState] = useState();
 
   const shapes = [
-    // { key: 1, icon: <BsCircle color="white" size={20} />, mode: "draw_circle" },
+    
     {
       key: 2,
       icon: <BiPlusCircle color="white" size={22} />,
@@ -62,10 +62,10 @@ function MapPage() {
         zoom: zoom,
         projection: "globe",
         pitch: 0,
-        maxBounds: [
-          [69.115538, 41.153268], // Southwest coordinates [longitude, latitude]
-          [69.354187, 41.426656], // Northeast coordinates [longitude, latitude]
-        ],
+        // maxBounds: [
+        //   [69.115538, 41.153268], // Southwest coordinates [longitude, latitude]
+        //   [69.354187, 41.426656], // Northeast coordinates [longitude, latitude]
+        // ],
       });
 
       mapRef.current = map;
@@ -145,7 +145,7 @@ function MapPage() {
         Longitude: {lng} | Latitude: {lat} | Zoom: {zoom}
       </div>
 
-      <div ref={mapContainer} className="map-container" />
+      <div ref={mapContainer} id="map" />
       <div className="drawBox">
         {shapes.map((shape) => (
           <div
