@@ -2,7 +2,38 @@
   width: 100%;
   height: 100vh;
 }
+.mapboxgl-ctrl-bottom-right .mapboxgl-ctrl-group{
+  background-color: transparent;
+  box-shadow: 0px 0px 10px 2px rgba(2, 71, 254, 0.5) inset !important;
+  backdrop-filter: "blur(5px)",
+  
+}
+.mapboxgl-ctrl-bottom-right .mapboxgl-ctrl-group .mapboxgl-ctrl-zoom-in .mapboxgl-ctrl-icon {
+  display: none;
+  background-image: url('https://cdn-icons-png.flaticon.com/128/10337/10337471.png');
+    background-repeat: no-repeat;
+    background-size: 50% 50%;
+    display: block;
+    
+}
 
+.mapboxgl-ctrl-bottom-right .mapboxgl-ctrl-group .mapboxgl-ctrl-zoom-out .mapboxgl-ctrl-icon{
+  display: none;
+  background-image: url('https://cdn-icons-png.flaticon.com/128/10337/10337430.png');
+    background-repeat: no-repeat;
+    background-size: 50% 50%;
+    display: block;
+}
+.mapboxgl-ctrl-bottom-right .mapboxgl-ctrl .mapboxgl-ctrl-compass .mapboxgl-ctrl-icon{
+  display: none;
+  background-image: url('https://cdn-icons-png.flaticon.com/128/3138/3138804.png');
+    background-repeat: no-repeat;
+    background-size: 50% 50%;
+    display: block;
+}
+.mapboxgl-ctrl-bottom-right .mapboxgl-ctrl-group button+button{
+  border-top: 1px solid #0040FF;
+}
 .sidebar {
   background-color: transparent;
   box-shadow: 0px 0px 20px 5px rgba(2, 71, 254, 0.5) inset;

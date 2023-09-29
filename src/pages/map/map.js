@@ -24,12 +24,11 @@ function MapPage() {
   const mapRef = useRef(null);
   const [lng, setLng] = useState(69.2893);
   const [lat, setLat] = useState(41.32003);
-  const [zoom, setZoom] = useState(11);
+  const [zoom, setZoom] = useState(12);
   const [drawType, setDrawType] = useState();
   const [drawState, set_drawState] = useState();
 
   const shapes = [
-    
     {
       key: 2,
       icon: <BiPlusCircle color="white" size={22} />,
@@ -62,10 +61,10 @@ function MapPage() {
         zoom: zoom,
         projection: "globe",
         pitch: 0,
-        // maxBounds: [
-        //   [69.115538, 41.153268], // Southwest coordinates [longitude, latitude]
-        //   [69.354187, 41.426656], // Northeast coordinates [longitude, latitude]
-        // ],
+        maxBounds: [
+          [69.115538, 41.153268], // Southwest coordinates [longitude, latitude]
+          [69.354187, 41.426656], // Northeast coordinates [longitude, latitude]
+        ],
       });
 
       mapRef.current = map;
@@ -84,6 +83,15 @@ function MapPage() {
             visualizePitch: true,
           });
           map.addControl(nav, "bottom-right");
+          const navigationControlContainer = map
+            .getContainer()
+            .querySelector(".mapboxgl-ctrl-bottom-right");
+          const zoomInButton = navigationControlContainer.querySelector(
+            ".mapboxgl-ctrl-zoom-in"
+          );
+          const zoomOutButton = navigationControlContainer.querySelector(
+            ".mapboxgl-ctrl-zoom-out"
+          );
         }
 
         map.on("draw.create", (e) => {
@@ -97,6 +105,7 @@ function MapPage() {
         map.on("draw.delete", (e) => {
           console.log("Shape deleted:", e.features);
         });
+        
       });
       map.on("mousedown", (e) => {
         console.log("click center cordinate", e);
