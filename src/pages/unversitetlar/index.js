@@ -2,13 +2,12 @@ import React from "react";
 import ReactDOMServer from "react-dom/server";
 import PopupComp from "../../components/popup/popup1/popup-comp";
 import { useSelector } from "react-redux";
-import mapboxgl from "mapbox-gl";
-
-const html = ReactDOMServer.renderToString(<PopupComp />);
 
 const Unversitetlar = () => {
   const globalMapInstans = useSelector((state) => state.globalMapInstans);
   const onloudedMap = useSelector((state) => state.onloudedMap);
+  const popupInstans = useSelector((state) => state.popupInstans);
+  const popupHoverInstans = useSelector((state) => state.popupHoverInstans);
 
   const generateRandomCoordinates = () => {
     let longitude = 69.2401 + (Math.random() - 0.5) * 0.2;
@@ -24,8 +23,6 @@ const Unversitetlar = () => {
     const imageId = "icon";
 
     if (globalMapInstans && onloudedMap) {
-      if (globalMapInstans.getSource(sourceId))
-        globalMapInstans.removeSource(sourceId);
       if (globalMapInstans.getLayer(layerId))
         globalMapInstans.removeLayer(layerId);
       if (globalMapInstans.getLayer(layerId1))
@@ -34,7 +31,8 @@ const Unversitetlar = () => {
         globalMapInstans.removeLayer(layerId2);
       if (globalMapInstans.hasImage(imageId))
         globalMapInstans.removeImage(imageId);
-
+      if (popupInstans) popupInstans.remove();
+      if (popupHoverInstans) popupHoverInstans.remove();
       const features = [];
       for (let i = 0; i < 500; i++) {
         let coordinatesRan = generateRandomCoordinates();
@@ -47,6 +45,8 @@ const Unversitetlar = () => {
             time: 1507425650893 + i,
             felt: null,
             tsunami: 0,
+            descriptionClick: `Manzil: Toshkent, Shayxontoxir tumani, massiv Gulobod, Uyg'ur ko'chasi, ${i}-unversitet`,
+            descriptionHover: `<h6 style='color: #fff'>Unversitet, ${i}</h6>`,
           },
           geometry: {
             type: "Point",
@@ -172,18 +172,57 @@ const Unversitetlar = () => {
       });
 
       globalMapInstans.on("click", layerId1, (e) => {
+        popupHoverInstans.remove();
         const coordinates = e.features[0].geometry.coordinates.slice();
-        // const mag = e.features[0].properties.mag;
-        // const tsunami = e.features[0].properties.tsunami === 1 ? "yes" : "no";
+
+        while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+          coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+        }
+        const descriptionClick = e.features[0].properties.descriptionClick;
+
+        popupInstans
+          .setLngLat(coordinates)
+          .setHTML(
+            ReactDOMServer.renderToString(
+              <PopupComp title={descriptionClick} />
+            )
+          )
+          .setMaxWidth("500px")
+          .setOffset(20)
+          .addTo(globalMapInstans);
+      });
+
+      globalMapInstans.on("mouseenter", layerId1, (e) => {
+        let bool = false;
+        if (popupInstans.isOpen()) {
+          let dataId = e.features[0].properties.id;
+          features.map((element) => {
+            if (dataId === element.properties.id) {
+              popupHoverInstans.remove();
+              bool = true;
+            }
+          });
+        }
+        if (bool) return;
+        globalMapInstans.getCanvas().style.cursor = "pointer";
+
+        const coordinates = e.features[0].geometry.coordinates.slice();
+        const descriptionHover = e.features[0].properties.descriptionHover;
 
         while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
           coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
         }
 
-        new mapboxgl.Popup()
+        popupHoverInstans
           .setLngLat(coordinates)
-          .setHTML(html)
+          .setHTML(descriptionHover)
+          .setOffset(20)
           .addTo(globalMapInstans);
+      });
+
+      globalMapInstans.on("mouseleave", layerId1, () => {
+        globalMapInstans.getCanvas().style.cursor = "";
+        popupHoverInstans.remove();
       });
 
       globalMapInstans.on("mouseenter", layerId, () => {

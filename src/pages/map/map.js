@@ -4,7 +4,12 @@ import { BsFillTrashFill } from "react-icons/bs";
 import { BiPlusCircle } from "react-icons/bi";
 import { TbPolygon } from "react-icons/tb";
 import { AiOutlineLine } from "react-icons/ai";
-import { GlobalMapInstans, OloudedMap } from "../../redux/actions";
+import {
+  GlobalMapInstans,
+  OloudedMap,
+  PopupHoverInstans,
+  PopupInstans,
+} from "../../redux/actions";
 import { useSelector } from "react-redux";
 import MapboxDraw from "@mapbox/mapbox-gl-draw";
 import "mapbox-gl/dist/mapbox-gl.css";
@@ -45,12 +50,7 @@ function MapPage() {
       mode: "draw_line_string",
     },
   ];
-  // let feature = {
-  //   id: "234nwkej2j3h4",
-  //   type: "Feature",
-  //   properties: {},
-  //   geometry: { type: "Point", coordinates: [0, 0] },
-  // };
+  
 
   useEffect(() => {
     const initializeMap = () => {
@@ -77,7 +77,13 @@ function MapPage() {
 
       map.on("load", () => {
         OloudedMap(true);
-
+        const popup = new mapboxgl.Popup();
+        PopupInstans(popup);
+        const popupHover = new mapboxgl.Popup({
+          closeButton: false,
+          closeOnClick: false,
+        });
+        PopupHoverInstans(popupHover);
         if (map) {
           const nav = new mapboxgl.NavigationControl({
             visualizePitch: true,

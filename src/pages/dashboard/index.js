@@ -7,24 +7,18 @@ import { useSelector } from "react-redux";
 import { Box } from "@mui/material";
 import MapPage from "../map/map";
 import { Outlet, useNavigate } from "react-router-dom";
-// import { RouteBool, RouteStr } from "../../redux/actions";
-// import { ROUTE_STR } from "../../redux/types";
 
 function DrawerAppBar() {
   const globalMapInstans = useSelector((state) => state.globalMapInstans);
-  // const onloudedMap = useSelector((state) => state.onloudedMap);
   const navItems = useSelector((state) => state.navItems);
 
   let navigate = useNavigate();
 
   const propRemove = () => {
-    const sourceId = "earthquakes";
     const layerId = "clusters";
     const layerId1 = "unclustered-point";
     const layerId2 = "cluster-count";
     const imageId = "icon";
-    if (globalMapInstans.getSource(sourceId))
-      globalMapInstans.removeSource(sourceId);
     if (globalMapInstans.getLayer(layerId))
       globalMapInstans.removeLayer(layerId);
     if (globalMapInstans.getLayer(layerId1))
@@ -75,7 +69,6 @@ function DrawerAppBar() {
                 key={item.id}
                 onClick={() => {
                   navigate(item.to);
-                  // propRemove()
                 }}
                 sx={{
                   color: "#fff",

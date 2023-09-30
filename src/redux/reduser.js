@@ -1,7 +1,14 @@
-import { GLOBAL_MAP_INSTANS, ONLOUDED_MAP } from "./types";
+import {
+  GLOBAL_MAP_INSTANS,
+  ONLOUDED_MAP,
+  POPUP_HOVER_INSTANS,
+  POPUP_INSTANS,
+} from "./types";
 
 const initialState = {
   globalMapInstans: null,
+  popupInstans: null,
+  popupHoverInstans: null,
   onloudedMap: false,
   navItems: [
     {
@@ -38,7 +45,10 @@ const reducer = (state = initialState, action) => {
       return { ...state, globalMapInstans: action.payload };
     case ONLOUDED_MAP:
       return { ...state, onloudedMap: action.payload };
-
+    case POPUP_INSTANS:
+      return { ...state, popupInstans: action.payload };
+    case POPUP_HOVER_INSTANS:
+      return { ...state, popupHoverInstans: action.payload };
     default:
       return state;
   }
