@@ -100,7 +100,7 @@ function MapPage() {
         map.on("mousemove", "3d-buildings", (e) => {
           map.getCanvas().style.cursor = "pointer";
           var feature = e.features[0];
-          var color = "#0000FF"; 
+          var color = "#0000FF";
 
           map.setPaintProperty("3d-buildings", "fill-extrusion-color", [
             "case",
@@ -108,21 +108,21 @@ function MapPage() {
             color,
             "#0020FF",
           ]);
+        });
 
-          map.on("mouseleave", "3d-buildings", () => {
-            map.getCanvas().style.cursor = "";
-            map.setPaintProperty(
-              "3d-buildings",
-              "fill-extrusion-color",
-              "#0020FF"
-            );
-          });
+        map.on("mouseleave", "3d-buildings", () => {
+          map.getCanvas().style.cursor = "";
+          map.setPaintProperty(
+            "3d-buildings",
+            "fill-extrusion-color",
+            "#0020FF",
+          );
         });
 
         map.on("click", "3d-buildings", (e) => {
           map.getCanvas().style.cursor = "pointer";
           var feature = e.features[0];
-          var color = "yellow"; 
+          var color = "yellow";
 
           map.setPaintProperty("3d-buildings", "fill-extrusion-color", [
             "case",
@@ -130,15 +130,6 @@ function MapPage() {
             color,
             "#0020FF",
           ]);
-
-          map.on("mouseleave", "3d-buildings", () => {
-            map.getCanvas().style.cursor = "";
-            map.setPaintProperty(
-              "3d-buildings",
-              "fill-extrusion-color",
-              "#0020FF",
-            );
-          });
         });
 
         map.on("mouseenter", "3d-buildings", () => {
@@ -147,7 +138,9 @@ function MapPage() {
         map.on("mouseleave", "3d-buildings", () => {
           map.getCanvas().style.cursor = "";
         });
+
         OloudedMap(true);
+
         const popup = new mapboxgl.Popup();
         PopupInstans(popup);
         const popupHover = new mapboxgl.Popup({
