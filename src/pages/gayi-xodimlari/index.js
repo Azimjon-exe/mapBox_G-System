@@ -192,17 +192,7 @@ const GayiXodimlari = () => {
       });
 
       globalMapInstans.on("mouseenter", layerId1, (e) => {
-        let bool = false;
-        if (popupInstans.isOpen()) {
-          let dataId = e.features[0].properties.id;
-          gayilar.map((element) => {
-            if (dataId === element.properties.id) {
-              popupHoverInstans.remove();
-              bool = true;
-            }
-          });
-        }
-        if (bool) return;
+        
         globalMapInstans.getCanvas().style.cursor = "pointer";
 
         const coordinates = e.features[0].geometry.coordinates.slice();

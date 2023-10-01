@@ -50,7 +50,6 @@ function MapPage() {
       mode: "draw_line_string",
     },
   ];
-  
 
   useEffect(() => {
     const initializeMap = () => {
@@ -61,9 +60,10 @@ function MapPage() {
         zoom: zoom,
         projection: "globe",
         pitch: 0,
+        bearing: -30,
         maxBounds: [
-          [69.115538, 41.153268], // Southwest coordinates [longitude, latitude]
-          [69.354187, 41.426656], // Northeast coordinates [longitude, latitude]
+          [69.115538, 41.153268],
+          [69.354187, 41.426656],
         ],
       });
 
@@ -76,6 +76,77 @@ function MapPage() {
       });
 
       map.on("load", () => {
+        map.addLayer({
+          id: "3d-buildings",
+          source: "composite",
+          "source-layer": "building",
+          filter: ["==", "extrude", "true"],
+          type: "fill-extrusion",
+          minzoom: 15,
+          paint: {
+            "fill-extrusion-color": "#0020FF",
+            "fill-extrusion-height": {
+              type: "identity",
+              property: "height",
+            },
+            "fill-extrusion-base": {
+              type: "identity",
+              property: "min_height",
+            },
+            "fill-extrusion-opacity": 1,
+          },
+        });
+
+        map.on("mousemove", "3d-buildings", (e) => {
+          map.getCanvas().style.cursor = "pointer";
+          var feature = e.features[0];
+          var color = "#0000FF"; 
+
+          map.setPaintProperty("3d-buildings", "fill-extrusion-color", [
+            "case",
+            ["==", ["id"], feature.id],
+            color,
+            "#0020FF",
+          ]);
+
+          map.on("mouseleave", "3d-buildings", () => {
+            map.getCanvas().style.cursor = "";
+            map.setPaintProperty(
+              "3d-buildings",
+              "fill-extrusion-color",
+              "#0020FF"
+            );
+          });
+        });
+
+        map.on("click", "3d-buildings", (e) => {
+          map.getCanvas().style.cursor = "pointer";
+          var feature = e.features[0];
+          var color = "yellow"; 
+
+          map.setPaintProperty("3d-buildings", "fill-extrusion-color", [
+            "case",
+            ["==", ["id"], feature.id],
+            color,
+            "#0020FF",
+          ]);
+
+          map.on("mouseleave", "3d-buildings", () => {
+            map.getCanvas().style.cursor = "";
+            map.setPaintProperty(
+              "3d-buildings",
+              "fill-extrusion-color",
+              "#0020FF",
+            );
+          });
+        });
+
+        map.on("mouseenter", "3d-buildings", () => {
+          map.getCanvas().style.cursor = "pointer";
+        });
+        map.on("mouseleave", "3d-buildings", () => {
+          map.getCanvas().style.cursor = "";
+        });
         OloudedMap(true);
         const popup = new mapboxgl.Popup();
         PopupInstans(popup);
