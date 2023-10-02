@@ -84,7 +84,7 @@ function MapPage() {
           type: "fill-extrusion",
           minzoom: 15,
           paint: {
-            "fill-extrusion-color": "#0020FF",
+            "fill-extrusion-color": "#3750AB",
             "fill-extrusion-height": {
               type: "identity",
               property: "height",
@@ -97,16 +97,16 @@ function MapPage() {
           },
         });
 
-        map.on("mousemove", "3d-buildings", (e) => {
+        map.on("mouseenter", "3d-buildings", (e) => {
           map.getCanvas().style.cursor = "pointer";
           var feature = e.features[0];
-          var color = "#0000FF";
+          var color = "#07257F";
 
           map.setPaintProperty("3d-buildings", "fill-extrusion-color", [
             "case",
             ["==", ["id"], feature.id],
             color,
-            "#0020FF",
+            "#3750AB",
           ]);
 
           map.on("mouseleave", "3d-buildings", () => {
@@ -114,7 +114,7 @@ function MapPage() {
             map.setPaintProperty(
               "3d-buildings",
               "fill-extrusion-color",
-              "#0020FF"
+              "#3750AB"
             );
           });
         });
@@ -128,7 +128,7 @@ function MapPage() {
             "case",
             ["==", ["id"], feature.id],
             color,
-            "#0020FF",
+            "#3750AB",
           ]);
 
           map.on("mouseleave", "3d-buildings", () => {
@@ -136,7 +136,7 @@ function MapPage() {
             map.setPaintProperty(
               "3d-buildings",
               "fill-extrusion-color",
-              "#0020FF"
+              "#3750AB"
             );
           });
         });

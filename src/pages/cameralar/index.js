@@ -56,7 +56,6 @@ const Kameralar = () => {
 
         cameralar.push(obj);
       }
-      console.log(cameralar);
       if (!globalMapInstans.getSource(sourceId)) {
         console.log(onloudedMap);
         globalMapInstans.addSource(sourceId, {
