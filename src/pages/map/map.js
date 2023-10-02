@@ -29,7 +29,7 @@ function MapPage() {
   const mapRef = useRef(null);
   const [lng, setLng] = useState(69.2893);
   const [lat, setLat] = useState(41.32003);
-  const [zoom, setZoom] = useState(12);
+  const [zoom, setZoom] = useState(11);
   const [drawType, setDrawType] = useState();
   const [drawState, set_drawState] = useState();
 
@@ -62,8 +62,8 @@ function MapPage() {
         pitch: 0,
         bearing: -30,
         maxBounds: [
-          [69.115538, 41.153268],
-          [69.354187, 41.426656],
+          [69.15538, 41.253268], // Southwest coordinates [longitude, latitude]
+          [69.454187, 41.526656], // Northeast coordinates [longitude, latitude]
         ],
       });
 
@@ -100,7 +100,7 @@ function MapPage() {
         map.on("mousemove", "3d-buildings", (e) => {
           map.getCanvas().style.cursor = "pointer";
           var feature = e.features[0];
-          var color = "#0000FF"; 
+          var color = "#0000FF";
 
           map.setPaintProperty("3d-buildings", "fill-extrusion-color", [
             "case",
@@ -122,7 +122,7 @@ function MapPage() {
         map.on("click", "3d-buildings", (e) => {
           map.getCanvas().style.cursor = "pointer";
           var feature = e.features[0];
-          var color = "yellow"; 
+          var color = "yellow";
 
           map.setPaintProperty("3d-buildings", "fill-extrusion-color", [
             "case",
@@ -136,7 +136,7 @@ function MapPage() {
             map.setPaintProperty(
               "3d-buildings",
               "fill-extrusion-color",
-              "#0020FF",
+              "#0020FF"
             );
           });
         });
