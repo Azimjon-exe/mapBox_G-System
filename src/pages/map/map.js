@@ -97,7 +97,7 @@ function MapPage() {
           },
         });
 
-        map.on("mouseenter", "3d-buildings", (e) => {
+        map.on("mousemove", "3d-buildings", (e) => {
           map.getCanvas().style.cursor = "pointer";
           var feature = e.features[0];
           var color = "#07257F";
@@ -108,15 +108,6 @@ function MapPage() {
             color,
             "#3750AB",
           ]);
-
-          map.on("mouseleave", "3d-buildings", () => {
-            map.getCanvas().style.cursor = "";
-            map.setPaintProperty(
-              "3d-buildings",
-              "fill-extrusion-color",
-              "#3750AB"
-            );
-          });
         });
 
         map.on("click", "3d-buildings", (e) => {
@@ -130,23 +121,17 @@ function MapPage() {
             color,
             "#3750AB",
           ]);
-
-          map.on("mouseleave", "3d-buildings", () => {
-            map.getCanvas().style.cursor = "";
-            map.setPaintProperty(
-              "3d-buildings",
-              "fill-extrusion-color",
-              "#3750AB"
-            );
-          });
         });
 
-        map.on("mouseenter", "3d-buildings", () => {
-          map.getCanvas().style.cursor = "pointer";
-        });
         map.on("mouseleave", "3d-buildings", () => {
           map.getCanvas().style.cursor = "";
+          map.setPaintProperty(
+            "3d-buildings",
+            "fill-extrusion-color",
+            "#3750AB"
+          );
         });
+
         OloudedMap(true);
         const popup = new mapboxgl.Popup();
         PopupInstans(popup);
@@ -220,6 +205,14 @@ function MapPage() {
       mapRef.current.addControl(draw, "bottom-right");
     }
   }, [drawType]);
+
+  useEffect(() => {
+    if (zoom > 16 && globalMapInstans?.getPitch() === 0) {
+      globalMapInstans?.setPitch(60, { duration: 0 });
+    } else if (zoom < 16 && globalMapInstans?.getPitch() === 60) {
+      globalMapInstans?.setPitch(0, { duration: 0 });
+    }
+  }, [zoom]);
 
   return (
     <div className="App">

@@ -2,37 +2,44 @@
   width: 100%;
   height: 100vh;
 }
-.mapboxgl-ctrl-bottom-right .mapboxgl-ctrl-group{
+.mapboxgl-ctrl-bottom-right .mapboxgl-ctrl-group {
   background-color: transparent;
   box-shadow: 0px 0px 10px 2px rgba(2, 71, 254, 0.5) inset !important;
   backdrop-filter: blur(5px) !important;
-  
 }
-.mapboxgl-ctrl-bottom-right .mapboxgl-ctrl-group .mapboxgl-ctrl-zoom-in .mapboxgl-ctrl-icon {
+.mapboxgl-ctrl-bottom-right
+  .mapboxgl-ctrl-group
+  .mapboxgl-ctrl-zoom-in
+  .mapboxgl-ctrl-icon {
   display: none;
-  background-image: url('https://cdn-icons-png.flaticon.com/128/10337/10337471.png');
-    background-repeat: no-repeat;
-    background-size: 50% 50%;
-    display: block;
-    
+  background-image: url("https://cdn-icons-png.flaticon.com/128/10337/10337471.png");
+  background-repeat: no-repeat;
+  background-size: 50% 50%;
+  display: block;
 }
 
-.mapboxgl-ctrl-bottom-right .mapboxgl-ctrl-group .mapboxgl-ctrl-zoom-out .mapboxgl-ctrl-icon{
+.mapboxgl-ctrl-bottom-right
+  .mapboxgl-ctrl-group
+  .mapboxgl-ctrl-zoom-out
+  .mapboxgl-ctrl-icon {
   display: none;
-  background-image: url('https://cdn-icons-png.flaticon.com/128/10337/10337430.png');
-    background-repeat: no-repeat;
-    background-size: 50% 50%;
-    display: block;
+  background-image: url("https://cdn-icons-png.flaticon.com/128/10337/10337430.png");
+  background-repeat: no-repeat;
+  background-size: 50% 50%;
+  display: block;
 }
-.mapboxgl-ctrl-bottom-right .mapboxgl-ctrl .mapboxgl-ctrl-compass .mapboxgl-ctrl-icon{
+.mapboxgl-ctrl-bottom-right
+  .mapboxgl-ctrl
+  .mapboxgl-ctrl-compass
+  .mapboxgl-ctrl-icon {
   display: none;
-  background-image: url('https://cdn-icons-png.flaticon.com/128/3138/3138804.png');
-    background-repeat: no-repeat;
-    background-size: 50% 50%;
-    display: block;
+  background-image: url("https://cdn-icons-png.flaticon.com/128/3138/3138804.png");
+  background-repeat: no-repeat;
+  background-size: 50% 50%;
+  display: block;
 }
-.mapboxgl-ctrl-bottom-right .mapboxgl-ctrl-group button+button{
-  border-top: 1px solid #0040FF;
+.mapboxgl-ctrl-bottom-right .mapboxgl-ctrl-group button + button {
+  border-top: 1px solid #0040ff;
 }
 .sidebar {
   background-color: transparent;
@@ -107,12 +114,11 @@
   padding: 5px 10px;
   border-radius: 3px;
 }
-.mapboxgl-popup-content .mapboxgl-popup-close-button{
+.mapboxgl-popup-content .mapboxgl-popup-close-button {
   color: #fff !important;
   font-size: 1.8rem;
   margin-top: 5px;
   margin-right: 5px;
-  border: 1px solid #0070FF;
   padding: 3px;
 }
 .mapboxgl-popup-content {
@@ -120,29 +126,29 @@
   box-shadow: 0px 0px 20px 0px rgba(0, 71, 254, 0.5) inset !important;
   backdrop-filter: blur(5px) !important;
 }
-.mapboxgl-popup-anchor-right .mapboxgl-popup-tip{
-  border-left-color: #0040FF !important;
+.mapboxgl-popup-anchor-right .mapboxgl-popup-tip {
+  border-left-color: #0040ff !important;
 }
-.mapboxgl-popup-anchor-left .mapboxgl-popup-tip{
-  border-right-color: #0040FF !important;
-}
-
-.mapboxgl-popup-anchor-top .mapboxgl-popup-tip{
-  border-bottom-color: #0040FF !important;
-}
-.mapboxgl-popup-anchor-bottom .mapboxgl-popup-tip{
-  border-top-color: #0040FF !important;
+.mapboxgl-popup-anchor-left .mapboxgl-popup-tip {
+  border-right-color: #0040ff !important;
 }
 
-.mapboxgl-popup-anchor-top-left .mapboxgl-popup-tip{
-  border-bottom-color: #0040FF !important;
+.mapboxgl-popup-anchor-top .mapboxgl-popup-tip {
+  border-bottom-color: #0040ff !important;
 }
-.mapboxgl-popup-anchor-top-right .mapboxgl-popup-tip{
-  border-bottom-color: #0040FF !important;
+.mapboxgl-popup-anchor-bottom .mapboxgl-popup-tip {
+  border-top-color: #0040ff !important;
 }
-.mapboxgl-popup-anchor-bottom-left .mapboxgl-popup-tip{
-  border-top-color: #0040FF !important;
+
+.mapboxgl-popup-anchor-top-left .mapboxgl-popup-tip {
+  border-bottom-color: #0040ff !important;
 }
-.mapboxgl-popup-anchor-bottom-right .mapboxgl-popup-tip{
-  border-top-color: #0040FF !important;
+.mapboxgl-popup-anchor-top-right .mapboxgl-popup-tip {
+  border-bottom-color: #0040ff !important;
+}
+.mapboxgl-popup-anchor-bottom-left .mapboxgl-popup-tip {
+  border-top-color: #0040ff !important;
+}
+.mapboxgl-popup-anchor-bottom-right .mapboxgl-popup-tip {
+  border-top-color: #0040ff !important;
 }
