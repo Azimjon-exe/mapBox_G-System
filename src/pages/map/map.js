@@ -131,7 +131,6 @@ function MapPage() {
           ]);
         });
 
-
         OloudedMap(true);
 
         const popup = new mapboxgl.Popup();
@@ -206,6 +205,14 @@ function MapPage() {
       mapRef.current.addControl(draw, "bottom-right");
     }
   }, [drawType]);
+
+  useEffect(() => {
+    if (zoom > 16 && globalMapInstans?.getPitch() === 0) {
+      globalMapInstans?.setPitch(60, { duration: 0 });
+    } else if (zoom < 16 && globalMapInstans?.getPitch() === 60) {
+      globalMapInstans?.setPitch(0, { duration: 0 });
+    }
+  }, [zoom]);
 
   return (
     <div className="App">
