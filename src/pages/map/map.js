@@ -97,7 +97,7 @@ function MapPage() {
           },
         });
 
-        map.on("mousemove", "3d-buildings", (e) => {
+        map.on("mouseenter", "3d-buildings", (e) => {
           map.getCanvas().style.cursor = "pointer";
           var feature = e.features[0];
           var color = "#07257F";
@@ -110,7 +110,7 @@ function MapPage() {
           ]);
         });
 
-        map.on("mouseleave", "3d-buildings", () => {
+        map.on("mouseout", "3d-buildings", () => {
           map.getCanvas().style.cursor = "";
           map.setPaintProperty(
             "3d-buildings",

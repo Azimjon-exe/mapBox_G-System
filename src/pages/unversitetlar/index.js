@@ -68,7 +68,7 @@ const Unversitetlar = () => {
             features: features,
           },
           cluster: true,
-          clusterMaxZoom: 16,
+          clusterMaxZoom: 20,
           clusterRadius: 100,
         });
         console.log(globalMapInstans.getSource(sourceId).id);
@@ -166,7 +166,7 @@ const Unversitetlar = () => {
 
             globalMapInstans.easeTo({
               center: features[0].geometry.coordinates,
-              zoom: zoom + 0.2,
+              zoom: zoom + 0.1,
             });
           });
       });

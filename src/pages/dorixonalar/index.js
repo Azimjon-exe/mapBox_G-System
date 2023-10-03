@@ -68,7 +68,7 @@ const Dorixonalar = () => {
             features: dorixonalar,
           },
           cluster: true,
-          clusterMaxZoom: 16,
+          clusterMaxZoom: 20,
           clusterRadius: 100,
         });
       }
@@ -164,7 +164,7 @@ const Dorixonalar = () => {
 
             globalMapInstans.easeTo({
               center: features[0].geometry.coordinates,
-              zoom: zoom + 0.2,
+              zoom: zoom + 0.1,
             });
           });
       });
