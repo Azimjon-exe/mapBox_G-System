@@ -69,7 +69,7 @@ const Kameralar = () => {
             features: cameralar,
           },
           cluster: true,
-          clusterMaxZoom: 16,
+          clusterMaxZoom: 22,
           clusterRadius: 100,
         });
         console.log("clasterlar chizildi");
@@ -164,7 +164,7 @@ const Kameralar = () => {
 
             globalMapInstans.easeTo({
               center: features[0].geometry.coordinates,
-              zoom: zoom + 0.2,
+              zoom: zoom + 0.1,
             });
             console.log(zoom);
           });
