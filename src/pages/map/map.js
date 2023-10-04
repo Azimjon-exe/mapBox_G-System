@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
+import ReactDOMServer from "react-dom/server";
 import mapboxgl from "mapbox-gl";
 import { BsFillTrashFill } from "react-icons/bs";
 import { BiPlusCircle } from "react-icons/bi";
@@ -20,6 +21,7 @@ import {
   DirectMode,
   SimpleSelectMode,
 } from "mapbox-gl-draw-circle";
+import Popup3D from "../../components/popup/popup3d";
 
 mapboxgl.accessToken =
   "pk.eyJ1IjoiYXppbWpvbm4iLCJhIjoiY2xtdTd2cXNuMGR2bjJqcWprNHJwaDJ0ZSJ9.S1qMws3nGfG-4Efs6DF9RQ";
@@ -32,7 +34,6 @@ function MapPage() {
   const [zoom, setZoom] = useState(11);
   const [drawType, setDrawType] = useState();
   const [drawState, set_drawState] = useState();
-
   const shapes = [
     {
       key: 2,
@@ -93,7 +94,7 @@ function MapPage() {
               type: "identity",
               property: "min_height",
             },
-            "fill-extrusion-opacity": 1,
+            "fill-extrusion-opacity": 0.6,
           },
         });
 
@@ -109,15 +110,10 @@ function MapPage() {
             "#3750AB",
           ]);
         });
-
-        map.on("mouseout", "3d-buildings", () => {
-          map.getCanvas().style.cursor = "";
-          map.setPaintProperty(
-            "3d-buildings",
-            "fill-extrusion-color",
-            "#3750AB"
-          );
-        });
+        const marker3D = new mapboxgl.Marker();
+        const popup3DIcon = new mapboxgl.Popup();
+        const markers3D = []
+        let featureId = 0;
         map.on("click", "3d-buildings", (e) => {
           map.getCanvas().style.cursor = "pointer";
           var feature = e.features[0];
@@ -129,6 +125,37 @@ function MapPage() {
             color,
             "#3750AB",
           ]);
+
+          popup3DIcon.setHTML(
+            ReactDOMServer.renderToString(<Popup3D lngLat={e.lngLat} />)
+          );
+
+          if (featureId !== feature.id) {
+            console.log(feature.id);
+            marker3D.remove();
+            marker3D
+              .setLngLat([e.lngLat.lng, e.lngLat.lat])
+              .setPopup(popup3DIcon)
+              .addTo(map);
+              markers3D.push(marker3D)
+          }
+
+          featureId = feature.id
+        });
+        if(markers3D.length !== 1){
+          setInterval(() => {
+          marker3D.remove();
+          featureId = 0;
+        }, 20000);
+        }
+        
+        map.on("mouseout", "3d-buildings", () => {
+          map.getCanvas().style.cursor = "";
+          map.setPaintProperty(
+            "3d-buildings",
+            "fill-extrusion-color",
+            "#3750AB"
+          );
         });
 
         OloudedMap(true);
@@ -165,7 +192,7 @@ function MapPage() {
         });
       });
       map.on("mousedown", (e) => {
-        console.log("click center cordinate", e);
+        console.log("click center cordinate", e.lngLat.lng, e.lngLat.lat);
       });
 
       GlobalMapInstans(map);
@@ -207,9 +234,9 @@ function MapPage() {
   }, [drawType]);
 
   useEffect(() => {
-    if (zoom > 16 && globalMapInstans?.getPitch() === 0) {
+    if (zoom > 15 && globalMapInstans?.getPitch() === 0) {
       globalMapInstans?.setPitch(60, { duration: 0 });
-    } else if (zoom < 16 && globalMapInstans?.getPitch() === 60) {
+    } else if (zoom < 15 && globalMapInstans?.getPitch() === 60) {
       globalMapInstans?.setPitch(0, { duration: 0 });
     }
   }, [zoom]);
