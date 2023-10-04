@@ -27,6 +27,8 @@ function MapPage() {
   const globalMapInstans = useSelector((state) => state.globalMapInstans);
   const mapContainer = useRef(null);
   const mapRef = useRef(null);
+  const contextmenuRef = useRef(null);
+  const clickTimeRef = useRef(null);
   const [lng, setLng] = useState(69.2893);
   const [lat, setLat] = useState(41.32003);
   const [zoom, setZoom] = useState(11);
@@ -38,16 +40,19 @@ function MapPage() {
       key: 2,
       icon: <BiPlusCircle color="white" size={22} />,
       mode: "drag_circle",
+      name: "Drag Circle",
     },
     {
       key: 3,
       icon: <TbPolygon color="white" size={22} />,
       mode: "draw_polygon",
+      name: "Draw Polygon",
     },
     {
       key: 4,
       icon: <AiOutlineLine color="white" size={22} />,
       mode: "draw_line_string",
+      name: "Draw Line String",
     },
   ];
 
@@ -164,10 +169,36 @@ function MapPage() {
           console.log("Shape deleted:", e.features);
         });
       });
-      map.on("mousedown", (e) => {
-        console.log("click center cordinate", e);
-      });
+      map.on("mousedown", (event) => {
+        if (contextmenuRef.current) {
+          contextmenuRef.current.style.display = "none";
+        }
 
+        if (event.originalEvent.button === 2) {
+          // Right mouse button was clicked
+          clickTimeRef.current = Date.now();
+        }
+      });
+      map.on("contextmenu", (event) => {
+        const windowCoordinates = [event.point.x, event.point.y];
+
+        // Update styles using useRef
+
+        if (clickTimeRef.current) {
+          const releaseTime = Date.now();
+          const timeDifference = releaseTime - clickTimeRef.current;
+          if (contextmenuRef.current && timeDifference < 500) {
+            contextmenuRef.current.style.left = `${windowCoordinates[0]}px`;
+            contextmenuRef.current.style.top = `${windowCoordinates[1]}px`;
+            contextmenuRef.current.style.display = "block";
+          }
+          // console.log(
+          //   "Time between click and release (ms):",
+          //   timeDifference,
+          //   releaseTime
+          // );
+        }
+      });
       GlobalMapInstans(map);
     };
 
@@ -222,7 +253,7 @@ function MapPage() {
 
       <div ref={mapContainer} id="map" />
       <div className="drawBox">
-        {shapes.map((shape) => (
+        {shapes?.map((shape) => (
           <div
             key={shape.key}
             className={`shape ${shape.mode === drawType ? "active" : ""}`}
@@ -245,6 +276,40 @@ function MapPage() {
           }}
         >
           <BsFillTrashFill size={20} color="white" />
+        </div>
+      </div>
+      <div ref={contextmenuRef} className="contextmenu">
+        {shapes?.map((shape) => (
+          <div
+            key={shape.key}
+            className={`shape ${shape.mode === drawType ? "active" : ""}`}
+            onClick={() => {
+              if (shape.mode !== drawType) {
+                setDrawType(shape.mode);
+                console.log(drawState);
+                if (drawType) mapRef.current.removeControl(drawState);
+              }
+              if (contextmenuRef.current) {
+                contextmenuRef.current.style.display = "none";
+              }
+            }}
+          >
+            {shape.icon}
+            <span>{shape.name}</span>
+          </div>
+        ))}
+        <div
+          className="deleteShape"
+          onClick={() => {
+            setDrawType(null);
+            if (drawType) mapRef.current.removeControl(drawState);
+            if (contextmenuRef.current) {
+              contextmenuRef.current.style.display = "none";
+            }
+          }}
+        >
+          <BsFillTrashFill size={20} color="rgb(252, 69, 56)" />{" "}
+          <span style={{ color: "rgb(252, 69, 56)" }}>Delete</span>
         </div>
       </div>
     </div>

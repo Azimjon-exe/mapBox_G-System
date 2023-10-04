@@ -76,6 +76,9 @@
 .drawBox > .active {
   background-color: blue;
 }
+.drawBox > div:hover {
+  background-color: blue;
+}
 .drawBox > .deleteShape {
   padding: 6px 5px;
   cursor: pointer;
@@ -151,4 +154,32 @@
 }
 .mapboxgl-popup-anchor-bottom-right .mapboxgl-popup-tip {
   border-top-color: #0040ff !important;
+}
+.contextmenu {
+  position: absolute;
+  display: none;
+  background-color: #002eadb7;
+  backdrop-filter: blur(5px) !important;
+}
+.contextmenu span {
+  padding-left: 10px;
+  color: white;
+  font-weight: 600;
+}
+.contextmenu > div {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 5px;
+}
+.contextmenu > div:hover {
+  background-color: rgb(0, 62, 196);
+}
+.contextmenu > .active {
+  background-color: rgb(0, 62, 196);
+}
+.contextmenu > .deleteShape {
+  border-top: 1px solid rgb(252, 69, 56);
+  padding-top: 5px;
+  margin-top: 5px;
 }
