@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import ReactDOMServer from "react-dom/server";
 import mapboxgl from "mapbox-gl";
-import { BsFillTrashFill } from "react-icons/bs";
+import { BsFillTrashFill, BsQuestionCircle } from "react-icons/bs";
 import { BiPlusCircle } from "react-icons/bi";
 import { TbPolygon } from "react-icons/tb";
 import { AiOutlineLine } from "react-icons/ai";
@@ -65,6 +65,7 @@ function MapPage() {
       name: "Draw Line String",
     },
   ];
+
   const initializeMap = () => {
     mapRef.current = new mapboxgl.Map({
       container: mapContainer.current,
@@ -158,10 +159,31 @@ function MapPage() {
           ["case", ["==", ["id"], feature.id], color, "#3750AB"]
         );
       });
+
+      let clickedLocation = null;
+      mapRef.current?.on("mousedown", (e) => {
+        clickedLocation = e.lngLat;
+      });
       const marker3D = new mapboxgl.Marker();
       const popup3DIcon = new mapboxgl.Popup();
-      const markers3D = [];
-      let featureId = 0;
+      document.getElementById("btnId").addEventListener("click", () => {
+        if (clickedLocation) {
+          console.log("bajarildi");
+          popup3DIcon.setHTML(
+            ReactDOMServer.renderToString(<Popup3D lngLat={clickedLocation} />)
+          );
+
+          marker3D
+            .setLngLat([clickedLocation.lng, clickedLocation.lat])
+            .setPopup(popup3DIcon)
+            .addTo(mapRef.current);
+        }
+
+        if (contextmenuRef.current) {
+          contextmenuRef.current.style.display = "none";
+        }
+      });
+
       mapRef.current?.on("click", "3d-buildings", (e) => {
         mapRef.current.getCanvas().style.cursor = "pointer";
         var feature = e.features[0];
@@ -172,29 +194,7 @@ function MapPage() {
           "fill-extrusion-color",
           ["case", ["==", ["id"], feature.id], color, "#3750AB"]
         );
-
-        popup3DIcon.setHTML(
-          ReactDOMServer.renderToString(<Popup3D lngLat={e.lngLat} />)
-        );
-
-        if (featureId !== feature.id) {
-          console.log(feature.id);
-          marker3D.remove();
-          marker3D
-            .setLngLat([e.lngLat.lng, e.lngLat.lat])
-            .setPopup(popup3DIcon)
-            .addTo(mapRef.current);
-          markers3D.push(marker3D);
-        }
-
-        featureId = feature.id;
       });
-      if (markers3D.length !== 1) {
-        setInterval(() => {
-          marker3D.remove();
-          featureId = 0;
-        }, 20000);
-      }
 
       mapRef.current?.on("mouseout", "3d-buildings", () => {
         mapRef.current.getCanvas().style.cursor = "";
@@ -206,6 +206,7 @@ function MapPage() {
       });
 
       //********** Hover end **************/
+
       OloudedMap(true);
 
       const popup = new mapboxgl.Popup();
@@ -367,7 +368,21 @@ function MapPage() {
           <BsFillTrashFill size={20} color="white" />
         </div>
       </div>
+
       <div ref={contextmenuRef} className="contextmenu">
+        <div id="btnId">
+          <BsQuestionCircle
+            style={{
+              paddingRight: 10,
+              paddingLeft: 2,
+              color: "#fff",
+              fontSize: "30px",
+            }}
+          />
+          <p style={{ margin: 0, color: "#fff", fontWeight: "bold" }}>
+            Bu yir nima...
+          </p>
+        </div>
         {shapes?.map((shape) => (
           <div
             key={shape.key}
