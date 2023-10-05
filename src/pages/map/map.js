@@ -56,7 +56,6 @@ function MapPage() {
       name: "Draw Line String",
     },
   ];
-
   useEffect(() => {
     const initializeMap = () => {
       const map = new mapboxgl.Map({
@@ -66,10 +65,12 @@ function MapPage() {
         zoom: zoom,
         projection: "globe",
         pitch: 0,
-        bearing: -30,
+        bearing: -30, 
+        // 68.95545871131318 41.173689928648514
+        // 69.6039219548966 41.44612025632972
         maxBounds: [
-          [69.15538, 41.253268], // Southwest coordinates [longitude, latitude]
-          [69.454187, 41.526656], // Northeast coordinates [longitude, latitude]
+          [68.95545871131318, 41.173689928648514], // Southwest coordinates [longitude, latitude]
+          [69.6039219548966, 41.44612025632972] // Northeast coordinates [longitude, latitude]
         ],
       });
 
@@ -114,11 +115,14 @@ function MapPage() {
             color,
             "#3750AB",
           ]);
+
+          
         });
         const marker3D = new mapboxgl.Marker();
         const popup3DIcon = new mapboxgl.Popup();
         const markers3D = [];
         let featureId = 0;
+        
         map.on("click", "3d-buildings", (e) => {
           map.getCanvas().style.cursor = "pointer";
           var feature = e.features[0];
@@ -136,7 +140,6 @@ function MapPage() {
           );
 
           if (featureId !== feature.id) {
-            console.log(feature.id);
             marker3D.remove();
             marker3D
               .setLngLat([e.lngLat.lng, e.lngLat.lat])
@@ -146,6 +149,7 @@ function MapPage() {
           }
 
           featureId = feature.id;
+          console.log(feature.layer.source);
         });
         if (markers3D.length !== 1) {
           setInterval(() => {
