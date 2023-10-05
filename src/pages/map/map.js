@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import ReactDOMServer from "react-dom/server";
 import mapboxgl from "mapbox-gl";
-import { BsFillTrashFill } from "react-icons/bs";
+import { BsFillTrashFill, BsQuestionCircle } from "react-icons/bs";
 import { BiPlusCircle } from "react-icons/bi";
 import { TbPolygon } from "react-icons/tb";
 import { AiOutlineLine } from "react-icons/ai";
@@ -36,6 +36,8 @@ function MapPage() {
   const [zoom, setZoom] = useState(11);
   const [drawType, setDrawType] = useState();
   const [drawState, set_drawState] = useState();
+  const [question, setQuestion] = React.useState(false);
+  const [clickCord, setClickCord] = React.useState([]);
   const shapes = [
     {
       key: 2,
@@ -65,12 +67,12 @@ function MapPage() {
         zoom: zoom,
         projection: "globe",
         pitch: 0,
-        bearing: -30, 
+        bearing: -30,
         // 68.95545871131318 41.173689928648514
         // 69.6039219548966 41.44612025632972
         maxBounds: [
           [68.95545871131318, 41.173689928648514], // Southwest coordinates [longitude, latitude]
-          [69.6039219548966, 41.44612025632972] // Northeast coordinates [longitude, latitude]
+          [69.6039219548966, 41.44612025632972], // Northeast coordinates [longitude, latitude]
         ],
       });
 
@@ -115,13 +117,7 @@ function MapPage() {
             color,
             "#3750AB",
           ]);
-
-          
         });
-        const marker3D = new mapboxgl.Marker();
-        const popup3DIcon = new mapboxgl.Popup();
-        const markers3D = [];
-        let featureId = 0;
         
         map.on("click", "3d-buildings", (e) => {
           map.getCanvas().style.cursor = "pointer";
@@ -134,29 +130,30 @@ function MapPage() {
             color,
             "#3750AB",
           ]);
-
-          popup3DIcon.setHTML(
-            ReactDOMServer.renderToString(<Popup3D lngLat={e.lngLat} />)
-          );
-
-          if (featureId !== feature.id) {
-            marker3D.remove();
-            marker3D
-              .setLngLat([e.lngLat.lng, e.lngLat.lat])
-              .setPopup(popup3DIcon)
-              .addTo(map);
-            markers3D.push(marker3D);
-          }
-
-          featureId = feature.id;
-          console.log(feature.layer.source);
         });
-        if (markers3D.length !== 1) {
-          setInterval(() => {
-            marker3D.remove();
-            featureId = 0;
-          }, 20000);
-        }
+        
+        let clickedLocation = null;
+        map.on("mousedown", (e) => {
+          clickedLocation = e.lngLat})
+        const marker3D = new mapboxgl.Marker();
+        const popup3DIcon = new mapboxgl.Popup();
+        document.getElementById("btnId").addEventListener("click", () => {
+            if (clickedLocation) {
+              console.log('bajarildi');
+              popup3DIcon.setHTML(
+                ReactDOMServer.renderToString(<Popup3D lngLat={clickedLocation} />)
+              );
+  
+              marker3D
+                .setLngLat([clickedLocation.lng, clickedLocation.lat])
+                .setPopup(popup3DIcon)
+                .addTo(map);
+            }
+
+          if (contextmenuRef.current) {
+            contextmenuRef.current.style.display = "none";
+          }
+        });
 
         map.on("mouseout", "3d-buildings", () => {
           map.getCanvas().style.cursor = "";
@@ -201,21 +198,18 @@ function MapPage() {
         });
       });
 
-      map.on("mousedown", (event) => {
+      map.on("mousedown", (e) => {
         if (contextmenuRef.current) {
           contextmenuRef.current.style.display = "none";
         }
 
-        if (event.originalEvent.button === 2) {
+        if (e.originalEvent.button === 2) {
           // Right mouse button was clicked
           clickTimeRef.current = Date.now();
         }
-        console.log(
-          "click center cordinate",
-          event.lngLat.lng,
-          event.lngLat.lat
-        );
+        console.log("click center cordinate", e.lngLat.lng, e.lngLat.lat);
       });
+
       map.on("contextmenu", (event) => {
         const windowCoordinates = [event.point.x, event.point.y];
 
@@ -249,6 +243,27 @@ function MapPage() {
     }; // Clean up on component unmount
     // eslint-disable-next-line
   }, [globalMapInstans]);
+
+  // React.useEffect(() => {
+  //   const marker3D = new mapboxgl.Marker();
+  //       const popup3DIcon = new mapboxgl.Popup();
+  //       globalMapInstans?.on("mousedown", (e) => {
+  //       marker3D.remove();
+  //       const WhatPlace = (e) => {
+  //           popup3DIcon.setHTML(
+  //             ReactDOMServer.renderToString(<Popup3D lngLat={e.lngLat} />)
+  //           );
+
+  //           marker3D.setLngLat([e.lngLat.lng, e.lngLat.lat]).setPopup(popup3DIcon).addTo(globalMapInstans);
+
+  //           console.log("bajarildi");
+  //       };
+  //       if (question) {
+  //         WhatPlace();
+  //         console.log("if ni ichiga kirdi");
+  //       }
+  //     })
+  // }, [globalMapInstans, question])
 
   useEffect(() => {
     if (mapRef.current && drawType) {
@@ -315,7 +330,21 @@ function MapPage() {
           <BsFillTrashFill size={20} color="white" />
         </div>
       </div>
+
       <div ref={contextmenuRef} className="contextmenu">
+        <div id="btnId">
+          <BsQuestionCircle
+            style={{
+              paddingRight: 10,
+              paddingLeft: 2,
+              color: "#fff",
+              fontSize: "30px",
+            }}
+          />
+          <p style={{ margin: 0, color: "#fff", fontWeight: "bold" }}>
+            Bu yir nima...
+          </p>
+        </div>
         {shapes?.map((shape) => (
           <div
             key={shape.key}
