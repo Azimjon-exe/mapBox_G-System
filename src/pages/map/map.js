@@ -69,6 +69,7 @@ function MapPage() {
   const initializeMap = () => {
     mapRef.current = new mapboxgl.Map({
       container: mapContainer.current,
+      // style: mapStyle,
       style: "mapbox://styles/azimjonn/clmu7yk2602ks01r78ak2dnjb",
       center: [69.279737, 41.311158],
       zoom: zoom,
@@ -97,7 +98,45 @@ function MapPage() {
       setZoom(mapRef.current?.getZoom().toFixed(2));
     });
 
+    //SERVER CONFIG
+    var vectorSource = "ne-source";
+    var vectorId = "ne-layer";
+
+    // Build the tile URL
+    var vectorServer = "http://192.168.102.19:7800/";
+    var vectorSourceLayer = "public.ne_50m_admin_0_countries";
+    // The data table has a lot of columns, we retrieve just three
+    var vectorProps = "?properties=name,type,pop_est";
+    var vectorUrl =
+      vectorServer + vectorSourceLayer + "/{z}/{x}/{y}.pbf" + vectorProps;
+
     mapRef.current?.on("load", () => {
+      //SERVER CONFIG
+
+      // Layers read from sources
+      mapRef.current?.addSource(vectorSource, {
+        type: "vector",
+        tiles: [vectorUrl],
+        minzoom: 0,
+        maxzoom: 22,
+      });
+
+      // To get wide rendered boundaries we
+      // need two layers, one for the boundaries
+      // and one for the fill
+      var vectorLayerColor = "blue";
+      var vectorLayerOutline = {
+        id: vectorId + "-outline",
+        source: vectorSource,
+        "source-layer": vectorSourceLayer,
+        type: "line",
+        paint: {
+          "line-width": 1.5,
+          "line-color": vectorLayerColor,
+        },
+      };
+      mapRef.current?.addLayer(vectorLayerOutline);
+
       //********** terrain **************/
 
       // mapRef.current?.addSource("mapbox-terrain", {
