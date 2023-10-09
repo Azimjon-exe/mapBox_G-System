@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import ReactDOMServer from "react-dom/server";
 import PopupComp from "../../components/popup/popup1/popup-comp";
 import { useSelector } from "react-redux";
+import home from './photo/house.png'
 
 
 const Xonadonlar = () => {
@@ -132,7 +133,7 @@ const Xonadonlar = () => {
       });
 
       globalMapInstans.loadImage(
-        "https://cdn-icons-png.flaticon.com/128/609/609803.png",
+        home,
         (error, image) => {
           if (error) throw error;
 
@@ -147,7 +148,7 @@ const Xonadonlar = () => {
             },
             layout: {
               "icon-image": imageId,
-              "icon-size": 0.3,
+              "icon-size": 0.1,
               "icon-allow-overlap": true,
             },
           });

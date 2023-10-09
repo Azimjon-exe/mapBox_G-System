@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOMServer from "react-dom/server";
 import PopupComp from "../../components/popup/popup1/popup-comp";
 import { useSelector } from "react-redux";
+import camera from './photo/camera.png'
 
 const Kameralar = () => {
   const globalMapInstans = useSelector((state) => state.globalMapInstans);
@@ -132,7 +133,7 @@ const Kameralar = () => {
       });
 
       globalMapInstans.loadImage(
-        "https://cdn-icons-png.flaticon.com/128/2709/2709353.png",
+        camera,
         (error, image) => {
           if (error) throw error;
 
@@ -144,7 +145,7 @@ const Kameralar = () => {
             filter: ["!", ["has", "point_count"]],
             layout: {
               "icon-image": imageId,
-              "icon-size": 0.25,
+              "icon-size": 0.1,
               "icon-allow-overlap": true,
             },
           });

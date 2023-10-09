@@ -12,7 +12,7 @@
   .mapboxgl-ctrl-zoom-in
   .mapboxgl-ctrl-icon {
   display: none;
-  background-image: url("https://cdn-icons-png.flaticon.com/128/10337/10337471.png");
+  background-image: url("./pages//map/photo/plus.png");
   background-repeat: no-repeat;
   background-size: 50% 50%;
   display: block;
@@ -23,7 +23,7 @@
   .mapboxgl-ctrl-zoom-out
   .mapboxgl-ctrl-icon {
   display: none;
-  background-image: url("https://cdn-icons-png.flaticon.com/128/10337/10337430.png");
+  background-image: url("./pages/map/photo/minus.png");
   background-repeat: no-repeat;
   background-size: 50% 50%;
   display: block;
@@ -33,7 +33,7 @@
   .mapboxgl-ctrl-compass
   .mapboxgl-ctrl-icon {
   display: none;
-  background-image: url("https://cdn-icons-png.flaticon.com/128/3138/3138804.png");
+  background-image: url("./pages/map/photo/navigator.png");
   background-repeat: no-repeat;
   background-size: 50% 50%;
   display: block;

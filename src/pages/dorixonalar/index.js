@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOMServer from "react-dom/server";
 import PopupComp from "../../components/popup/popup1/popup-comp";
 import { useSelector } from "react-redux";
+import dorixona from './photo/dorixona.png'
 
 const Dorixonalar = () => {
   const globalMapInstans = useSelector((state) => state.globalMapInstans);
@@ -130,7 +131,7 @@ const Dorixonalar = () => {
       });
 
       globalMapInstans.loadImage(
-        "https://cdn-icons-png.flaticon.com/128/3497/3497123.png",
+        dorixona,
         (error, image) => {
           if (error) throw error;
 
@@ -145,7 +146,7 @@ const Dorixonalar = () => {
             },
             layout: {
               "icon-image": imageId,
-              "icon-size": 0.25,
+              "icon-size": 0.08,
               "icon-allow-overlap": true,
             },
           });

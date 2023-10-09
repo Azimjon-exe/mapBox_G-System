@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOMServer from "react-dom/server";
 import PopupComp from "../../components/popup/popup1/popup-comp";
 import { useSelector } from "react-redux";
+import gayi from './photo/gayi.png'
 
 const GayiXodimlari = () => {
   const globalMapInstans = useSelector((state) => state.globalMapInstans);
@@ -129,7 +130,7 @@ const GayiXodimlari = () => {
       });
 
       globalMapInstans.loadImage(
-        "https://cdn-icons-png.flaticon.com/128/5917/5917776.png",
+        gayi,
         (error, image) => {
           if (error) throw error;
 
@@ -144,7 +145,7 @@ const GayiXodimlari = () => {
             },
             layout: {
               "icon-image": imageId,
-              "icon-size": 0.6,
+              "icon-size": 0.2,
               "icon-allow-overlap": true,
             },
           });

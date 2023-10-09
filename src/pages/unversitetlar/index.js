@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOMServer from "react-dom/server";
 import PopupComp from "../../components/popup/popup1/popup-comp";
 import { useSelector } from "react-redux";
+import unversitet from './photo/university.png';
 
 const Unversitetlar = () => {
   const globalMapInstans = useSelector((state) => state.globalMapInstans);
@@ -131,7 +132,7 @@ const Unversitetlar = () => {
       });
 
       globalMapInstans.loadImage(
-        "https://img.icons8.com/?size=80&id=mDrxZDYOqAEP&format=png",
+        unversitet,
         (error, image) => {
           if (error) throw error;
 
@@ -146,7 +147,7 @@ const Unversitetlar = () => {
             },
             layout: {
               "icon-image": imageId,
-              "icon-size": 0.5,
+              "icon-size": 0.1,
               "icon-allow-overlap": true,
             },
           });
