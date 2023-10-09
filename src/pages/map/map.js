@@ -69,8 +69,8 @@ function MapPage() {
   const initializeMap = () => {
     mapRef.current = new mapboxgl.Map({
       container: mapContainer.current,
-      // style: mapStyle,
-      style: "mapbox://styles/azimjonn/clmu7yk2602ks01r78ak2dnjb",
+      style: mapStyle,
+      // style: "mapbox://styles/azimjonn/clmu7yk2602ks01r78ak2dnjb",
       center: [69.279737, 41.311158],
       zoom: zoom,
       projection: "globe",
@@ -78,8 +78,8 @@ function MapPage() {
       pitchWithRotate,
       bearing: -30,
       maxBounds: [
-        [69.15538, 41.253268], // Southwest coordinates [longitude, latitude]
-        [69.454187, 41.526656], // Northeast coordinates [longitude, latitude]
+        [68.95545871131318, 41.173689928648514], // Southwest coordinates [longitude, latitude]
+        [69.6039219548966, 41.44612025632972], // Northeast coordinates [longitude, latitude]
       ],
     });
   };
