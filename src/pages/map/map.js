@@ -111,7 +111,7 @@ function MapPage() {
     var vectorProps = "?properties=name,type,pop_est";
     var vectorUrl =
       vectorServer + vectorSourceLayer + "/{z}/{x}/{y}.pbf" + vectorProps;
-
+ 
     mapRef.current?.on("load", () => {
       //SERVER CONFIG
 
