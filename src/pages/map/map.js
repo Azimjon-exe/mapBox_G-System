@@ -21,14 +21,14 @@ import {
   DirectMode,
   SimpleSelectMode,
 } from "mapbox-gl-draw-circle";
-import mapStyle from "./Monochrome(clmu7yk2602ks01r78ak2dnjb)/style.json";
+import mapStyle from "./stylemap/style.json";
 import Popup3D from "../../components/popup/popup3d";
 import d2 from "../../img/2d.png";
 import d3 from "../../img/3d.png";
 
 mapboxgl.accessToken =
   "pk.eyJ1IjoiYXppbWpvbm4iLCJhIjoiY2xtdTd2cXNuMGR2bjJqcWprNHJwaDJ0ZSJ9.S1qMws3nGfG-4Efs6DF9RQ";
-mapboxgl.config.API_URL = "http://192.168.102.19:7800/";
+// mapboxgl.config.API_URL = "http://192.168.102.19:7800/";
 function MapPage() {
   console.log(mapboxgl);
   const globalMapInstans = useSelector((state) => state.globalMapInstans);
