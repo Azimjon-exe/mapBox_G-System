@@ -58,6 +58,7 @@ function DrawerAppBar() {
               onClick={() => {
                 navigate("/");
                 propRemove();
+                globalMapInstans.setZoom(11);
               }}
             >
               Qalqon 3D MAP

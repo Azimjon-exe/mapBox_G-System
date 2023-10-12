@@ -23,8 +23,6 @@ import {
 } from "mapbox-gl-draw-circle";
 import mapStyle from "./stylemap/style.json";
 import Popup3D from "../../components/popup/popup3d";
-import d2 from "../../img/2d.png";
-import d3 from "../../img/3d.png";
 
 mapboxgl.accessToken =
   "pk.eyJ1IjoiYXppbWpvbm4iLCJhIjoiY2xtdTd2cXNuMGR2bjJqcWprNHJwaDJ0ZSJ9.S1qMws3nGfG-4Efs6DF9RQ";
@@ -45,7 +43,7 @@ function MapPage() {
   const [drawType, setDrawType] = useState();
   const [drawState, set_drawState] = useState();
   const [mode3d, set_mode3d] = useState(false);
-  const [pitchWithRotate, set_pitchWithRotate] = useState(false);
+  // const [pitchWithRotate, set_pitchWithRotate] = useState(false);
 
   const shapes = [
     {
@@ -77,7 +75,7 @@ function MapPage() {
       zoom: zoom,
       projection: "globe",
       pitch: 0,
-      pitchWithRotate,
+      // pitchWithRotate,/
       bearing: -30,
       maxBounds: [
         [68.95545871131318, 41.173689928648514], // Southwest coordinates [longitude, latitude]
@@ -89,7 +87,7 @@ function MapPage() {
     if (!globalMapInstans) {
       initializeMap();
     }
-  }, [pitchWithRotate]);
+  }, []);
 
   useEffect(() => {
     // mapRef.current = map;
@@ -122,7 +120,6 @@ function MapPage() {
         minzoom: 0,
         maxzoom: 22,
       });
-
       // To get wide rendered boundaries we
       // need two layers, one for the boundaries
       // and one for the fill
@@ -193,7 +190,6 @@ function MapPage() {
         mapRef.current.getCanvas().style.cursor = "pointer";
         var feature = e.features[0];
         var color = "#07257F";
-
         mapRef.current.setPaintProperty(
           "3d-buildings",
           "fill-extrusion-color",
@@ -229,7 +225,7 @@ function MapPage() {
         mapRef.current.getCanvas().style.cursor = "pointer";
         var feature = e.features[0];
         var color = "yellow";
-
+        console.log(feature);
         mapRef.current?.setPaintProperty(
           "3d-buildings",
           "fill-extrusion-color",
@@ -265,8 +261,6 @@ function MapPage() {
         const navigationControlContainer = mapRef.current
           .getContainer()
           .querySelector(".mapboxgl-ctrl-bottom-right");
-        navigationControlContainer.querySelector(".mapboxgl-ctrl-zoom-in");
-        navigationControlContainer.querySelector(".mapboxgl-ctrl-zoom-out");
       }
 
       mapRef.current?.on("draw.create", (e) => {
@@ -348,30 +342,35 @@ function MapPage() {
     }
   }, [drawType]);
 
-  useEffect(() => {
-    // if (zoom > 14 && globalMapInstans?.getPitch() !== 60 && mode3d) {
-    //   globalMapInstans?.setPitch(60, { duration: 0 });
-    // } else if (zoom < 14 && globalMapInstans?.getPitch() === 60 && !mode3d) {
-    //   globalMapInstans?.setPitch(0, { duration: 0 });
-    // }
-    if (zoom > 14) {
-      mode3dRef.current.style.display = "block";
-    } else if (zoom < 14) {
-      mode3dRef.current.style.display = "none";
-    }
+  // useEffect(() => {
+  //   // if (zoom > 14 && globalMapInstans?.getPitch() !== 60 && mode3d) {
+  //   //   globalMapInstans?.setPitch(60, { duration: 0 });
+  //   // } else if (zoom < 14 && globalMapInstans?.getPitch() === 60 && !mode3d) {
+  //   //   globalMapInstans?.setPitch(0, { duration: 0 });
+  //   // }
+  //   if (zoom < 15) {
+  //     // mode3dRef.current.style.display = "block";
+  //     // mapRef.current?.dragRotate.disable();
+  //   }
+  //   else if (zoom >= 15) {
+  //     // mode3dRef.current.style.display = "none";
+  //     // mapRef.current?.dragRotate.enable();
+  //   }
 
-    // eslint-disable-next-line
-  }, [zoom, mode3d]);
+  //   // eslint-disable-next-line
+  // }, [zoom, mode3d]);
 
   useEffect(() => {
     if (mode3d) {
+      mapRef.current?.dragRotate.enable();
       globalMapInstans?.setPitch(60, { duration: 0 });
-      set_pitchWithRotate(true);
-      mapRef.current.dragRotate._pitchWithRotate = true;
+      // set_pitchWithRotate(true);
+      // mapRef.current.dragRotate._pitchWithRotate = true;
     } else {
+      mapRef.current?.dragRotate.disable();
       globalMapInstans?.setPitch(0, { duration: 0 });
-      set_pitchWithRotate(false);
-      mapRef.current.dragRotate._pitchWithRotate = false;
+      // set_pitchWithRotate(false);
+      // mapRef.current.dragRotate._pitchWithRotate = false;
     }
     // eslint-disable-next-line
   }, [mode3d]);
@@ -459,19 +458,23 @@ function MapPage() {
       </div>
       <div className="mode3d2d" ref={mode3dRef}>
         {mode3d ? (
-          <img
-            src={d3}
+          <div
+            className="button-2d3d"
             alt="3d"
-            width={"100%"}
+            // width={"100%"}
             onClick={() => set_mode3d(false)}
-          />
+          >
+            <p>3D</p>
+          </div>
         ) : (
-          <img
-            src={d2}
+          <div
+            className="button-2d3d"
             alt="3d"
-            width={"100%"}
+            // width={"90%"}
             onClick={() => set_mode3d(true)}
-          />
+          >
+            <p>2D</p>
+          </div>
         )}
       </div>
     </div>

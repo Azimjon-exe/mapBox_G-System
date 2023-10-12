@@ -126,7 +126,7 @@
 }
 .mapboxgl-popup-content {
   background: transparent !important;
-  box-shadow: 0px 0px 20px 0px rgba(0, 71, 254, 0.5) inset !important;
+  box-shadow: 0px 0px 20px 0px rgba(0, 71, 254, 0.6) inset !important;
   backdrop-filter: blur(8px) !important;
 }
 .mapboxgl-popup-anchor-right .mapboxgl-popup-tip {
@@ -189,5 +189,21 @@
   top: 200px;
   right: 10px;
   width: 50px;
-  height: 50px;
+  height: 55px;
+}
+.mode3d2d .button-2d3d{
+  height: 100%;
+  width: 100%;
+  box-shadow: 0px 0px 20px 5px rgba(2, 71, 254, 0.8) inset !important;
+  backdrop-filter: blur(10px) !important;
+  clip-path: polygon(50% 0, 100% 26%, 100% 76%, 49% 100%, 0 75%, 0 27%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.mode3d2d .button-2d3d p{
+  margin: 0;
+  padding: 2;
+  font-size: 1.3rem;
+  color: #fff;
 }
