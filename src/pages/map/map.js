@@ -68,7 +68,7 @@ function MapPage() {
   const initializeMap = () => {
     mapRef.current = new mapboxgl.Map({
       container: mapContainer.current,
-      style: "http://localhost:3001/stylemap/style.json",
+      style: "http://localhost:3000/stylemap/style.json",
       center: [69.279737, 41.311158],
       zoom: zoom,
       projection: "globe",

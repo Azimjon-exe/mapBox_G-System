@@ -290,16 +290,16 @@
   },
   "sources": {
     "mapbox-dem": {
-      "url": "http://localhost:3001/stylemap/terrian/terrianv1.json",
+      "url": "http://localhost:3000/stylemap/terrian/terrianv1.json",
       "type": "raster-dem",
       "tileSize": 512
     },
     "composite": {
-      "url": "http://localhost:3001/stylemap/terrian/terrianv2.json",
+      "url": "http://localhost:3000/stylemap/terrian/terrianv2.json",
       "type": "vector"
     }
   },
-  "sprite": "http://localhost:3001/sprites/osm-liberty",
+  "sprite": "http://localhost:3000/sprites/osm-liberty",
   "glyphs": "http://192.168.5.131:9600/download/fonts/{fontstack}/{range}.pbf",
   "projection": { "name": "globe" },
   "layers": [
