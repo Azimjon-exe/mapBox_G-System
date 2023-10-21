@@ -68,7 +68,7 @@ function MapPage() {
   const initializeMap = () => {
     mapRef.current = new mapboxgl.Map({
       container: mapContainer.current,
-      style: "http://localhost:3000/stylemap/style.json",
+      style: "http://192.168.5.131:9600/style.json",
       center: [69.279737, 41.311158],
       zoom: zoom,
       projection: "globe",
@@ -172,15 +172,22 @@ function MapPage() {
         type: "fill-extrusion",
         minzoom: 15,
         paint: {
-          "fill-extrusion-color": "#3750AB",
+          "fill-extrusion-color": [
+            "interpolate",
+            ["linear"],
+            ["get", "height"],
+            0,
+            "#455a64",
+            50,
+            "#2962ff",
+            100,
+            "#1a237e",
+          ],
           "fill-extrusion-height": {
             type: "identity",
             property: "height",
           },
-          "fill-extrusion-base": {
-            type: "identity",
-            property: "min_height",
-          },
+          'fill-extrusion-height': ['get', 'height'],
           "fill-extrusion-opacity": 0.6,
         },
       });
@@ -192,7 +199,17 @@ function MapPage() {
         mapRef.current.setPaintProperty(
           "3d-buildings",
           "fill-extrusion-color",
-          ["case", ["==", ["id"], feature.id], color, "#3750AB"]
+          ["case", ["==", ["id"], feature.id], color, [
+            "interpolate",
+            ["linear"],
+            ["get", "height"],
+            0,
+            "#455a64",
+            50,
+            "#2962ff",
+            100,
+            "#1a237e",
+          ]]
         );
       });
 
@@ -228,7 +245,17 @@ function MapPage() {
         mapRef.current?.setPaintProperty(
           "3d-buildings",
           "fill-extrusion-color",
-          ["case", ["==", ["id"], feature.id], color, "#3750AB"]
+          ["case", ["==", ["id"], feature.id], color, [
+            "interpolate",
+            ["linear"],
+            ["get", "height"],
+            0,
+            "#455a64",
+            50,
+            "#2962ff",
+            100,
+            "#1a237e",
+          ]]
         );
       });
 
@@ -237,7 +264,17 @@ function MapPage() {
         mapRef.current?.setPaintProperty(
           "3d-buildings",
           "fill-extrusion-color",
-          "#3750AB"
+          [
+            "interpolate",
+            ["linear"],
+            ["get", "height"],
+            0,
+            "#455a64",
+            50,
+            "#2962ff",
+            100,
+            "#1a237e",
+          ],
         );
       });
 

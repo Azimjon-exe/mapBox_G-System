@@ -299,7 +299,7 @@
       "type": "vector"
     }
   },
-  "sprite": "http://localhost:3000/sprites/osm-liberty",
+  "sprite": "http://localhost:3000/stylemap/sprites/sprite@3x",
   "glyphs": "http://192.168.5.131:9600/download/fonts/{fontstack}/{range}.pbf",
   "projection": { "name": "globe" },
   "layers": [
